@@ -5,4 +5,7 @@ export const env = z
     TURSO_URL: z.string().url().optional(),
     TURSO_AUTH_TOKEN: z.string().optional(),
   })
-  .parse(process.env);
+  .parse({
+    TURSO_URL: process.env.TURSO_URL,
+    TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
+  });
