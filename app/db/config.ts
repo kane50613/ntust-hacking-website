@@ -4,6 +4,8 @@ export const dbConfig = getConfig();
 
 function getConfig() {
   if (env.TURSO_URL && env.TURSO_AUTH_TOKEN) {
+    console.log(`Found TURSO_URL and TURSO_AUTH_TOKEN`);
+
     return {
       dialect: "turso",
       dbCredentials: {
@@ -12,6 +14,8 @@ function getConfig() {
       },
     } as const;
   }
+
+  console.log(`No TURSO_URL or TURSO_AUTH_TOKEN found`);
 
   return {
     dialect: "sqlite",
