@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { reactRouter } from "@react-router/dev/vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "tailwindcss";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,6 +19,11 @@ export default defineConfig({
         JSON.stringify(value),
       ])
     ),
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss()],
+    },
   },
   plugins: [tsconfigPaths(), react(), reactRouter()],
 });
