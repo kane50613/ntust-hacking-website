@@ -1,7 +1,7 @@
-import { createRequestHandler } from "@react-router/cloudflare";
+import { createPagesFunctionHandler } from "@react-router/cloudflare";
 import * as build from "../build/server/index.js";
 
-export default createRequestHandler({
+export default createPagesFunctionHandler({
   build,
   mode: "production",
 });
