@@ -26,3 +26,4 @@ dist-ssr
 db.sqlite
 dist
 build
+.env
