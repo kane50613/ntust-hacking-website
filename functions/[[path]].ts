@@ -1,7 +1,7 @@
 import { createPagesFunctionHandler } from "@react-router/cloudflare";
 import * as build from "../build/server/index.js";
 
-export default createPagesFunctionHandler({
+export const onRequest = createPagesFunctionHandler({
   build,
   mode: "production",
 });
