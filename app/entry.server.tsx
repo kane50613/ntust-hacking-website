@@ -1,7 +1,6 @@
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
-import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToReadableStream } from "react-dom/server";
 
 export default async function handleRequest(
@@ -15,10 +14,8 @@ export default async function handleRequest(
 
   // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
   // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
-  const readyOption: keyof RenderToPipeableStreamOptions =
-    (userAgent && isbot(userAgent)) || routerContext.isSpaMode
-      ? "onAllReady"
-      : "onShellReady";
+  const waitForAllContent =
+    (userAgent && isbot(userAgent)) || routerContext.isSpaMode;
 
   const body = await renderToReadableStream(
     <ServerRouter context={routerContext} url={request.url} />,
@@ -39,7 +36,7 @@ export default async function handleRequest(
 
   responseHeaders.set("Content-Type", "text/html");
 
-  if (readyOption === "onAllReady") {
+  if (waitForAllContent) {
     await body.allReady;
   }
 
