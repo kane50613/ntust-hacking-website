@@ -5,5 +5,19 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    target: "esnext",
+  },
+  esbuild: {
+    supported: {
+      "top-level-await": true,
+    },
+    define: Object.fromEntries(
+      Object.entries(process.env).map(([key, value]) => [
+        `process.env.${key}`,
+        JSON.stringify(value),
+      ])
+    ),
+  },
   plugins: [tsconfigPaths(), react(), reactRouter()],
 });
