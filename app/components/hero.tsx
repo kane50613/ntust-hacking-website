@@ -113,9 +113,12 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
           <Button
             size="lg"
             className="text-lg w-full sm:w-auto rounded-full h-12"
+            asChild
           >
-            <FaCalendar className="w-6" />
-            最新社團資訊
+            <a href="#events">
+              <FaCalendar className="w-6" />
+              最新社團資訊
+            </a>
           </Button>
         </FadeInButton>
         <FadeInButton delay={4.75}>

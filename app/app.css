@@ -4,6 +4,8 @@
 
 html,
 body {
+  @apply scroll-smooth;
+
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }

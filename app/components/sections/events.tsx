@@ -7,7 +7,10 @@ export const Events = ({
   eventRecords: (typeof events.$inferSelect)[];
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 text-center py-16">
+    <div
+      className="flex flex-col items-center justify-center gap-4 text-center py-16"
+      id="events"
+    >
       <SectionTitle>社團課資訊</SectionTitle>
       {eventRecords.map((eventRecord) => (
         <div key={eventRecord.eventId}>
