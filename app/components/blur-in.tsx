@@ -1,5 +1,3 @@
-"use client";
-
 import { m, MotionProps, Variant } from "framer-motion";
 
 import { FC, PropsWithChildren } from "react";

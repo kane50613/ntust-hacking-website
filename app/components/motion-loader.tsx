@@ -1,5 +1,3 @@
-"use client";
-
 import { LazyMotion } from "framer-motion";
 import { ReactNode } from "react";
 
