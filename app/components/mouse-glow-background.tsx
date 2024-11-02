@@ -192,7 +192,7 @@ export const MouseGlowBackground = () => {
       />
 
       {/* Text layer */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full text-center">
         {gridConfig.map((item, i) => (
           <GlowingText
             key={i}
