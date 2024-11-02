@@ -11,7 +11,7 @@ interface Part {
 }
 
 const glowStyle =
-  "before:blur-lg before:opacity-50 before:absolute before:top-4 before:left-0";
+  "before:blur-xl before:opacity-50 before:absolute before:top-4 before:left-0";
 
 const parts: Part[] = [
   {
@@ -29,7 +29,7 @@ const parts: Part[] = [
     delay: 1.5,
   },
   {
-    text: "嘛？",
+    text: "嗎？",
     delay: 2.5,
   },
 ];
