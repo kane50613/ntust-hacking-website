@@ -1,5 +1,6 @@
 import { m } from "framer-motion";
 import { Button } from "./ui/button";
+import { BlurIn } from "./blur-in";
 
 const parts: {
   text: string;
@@ -27,32 +28,22 @@ const parts: {
   },
 ];
 
-const defaultPartsVariants = {
-  hidden: { filter: "blur(10px)", opacity: 0 },
-  visible: { filter: "blur(0px)", opacity: 1 },
-};
-
 export const Hero = () => {
   return (
-    <div className="flex flex-col items-center justify-center font-sans">
-      <m.div
-        className="py-24 flex gap-4 items-center justify-center flex-col"
-        variants={defaultPartsVariants}
-        viewport={{ once: true }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          duration: 1,
-          delay: 4,
-        }}
+    <div className="flex flex-col items-center justify-center font-sans py-48 gap-16">
+      <BlurIn
+        component="div"
+        className="flex gap-4 items-center justify-center flex-col"
+        duration={1}
+        delay={4}
       >
         <img
           src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg?w=300&h=300"
           className="rounded-full w-20 aspect-square shadow-lg"
         />
         <p className="text-xl sm:text-2xl">台科大資訊安全研究社</p>
-      </m.div>
-      <div className="flex flex-col items-center justify-center gap-4 text-center py-16 sm:py-24">
+      </BlurIn>
+      <div className="flex flex-col items-center justify-center gap-4 text-center">
         <m.h1
           className="text-[10vw] sm:text-[7vw]"
           initial={{
@@ -68,42 +59,43 @@ export const Hero = () => {
           viewport={{ once: true }}
         >
           {parts.map((part, index) => (
-            <m.span
+            <BlurIn
+              component="span"
               key={index}
-              initial="hidden"
-              whileInView="visible"
-              transition={{
-                delay: part.delay + 0.5,
-                duration: 0.5,
-              }}
-              variants={defaultPartsVariants}
-              viewport={{ once: true }}
+              delay={part.delay + 0.5}
+              duration={0.5}
               className={part.className}
             >
               {part.text}
-            </m.span>
+            </BlurIn>
           ))}
         </m.h1>
+        <BlurIn
+          component="span"
+          className="text-primary/85 text-xl"
+          delay={4}
+          duration={0.5}
+        >
+          台科資安社作為頂尖的網路黑魔法重地，擁有龐大的黑魔法教育資源，更培育出多位國家戰略級魔法師
+        </BlurIn>
       </div>
-      <m.div
+      <BlurIn
+        component="div"
         className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-6"
-        variants={defaultPartsVariants}
-        viewport={{ once: true }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          delay: 4.5,
-          duration: 1,
-          ease: "easeOut",
-        }}
+        delay={4.5}
+        duration={1}
       >
-        <Button size="lg" className="text-lg w-full sm:w-auto rounded-full">
-          我們是誰
-        </Button>
         <Button size="lg" className="text-lg w-full sm:w-auto rounded-full">
           最新社團資訊
         </Button>
-      </m.div>
+        <Button
+          size="lg"
+          variant="secondary"
+          className="text-lg w-full sm:w-auto rounded-full"
+        >
+          加入 Discord
+        </Button>
+      </BlurIn>
     </div>
   );
 };
