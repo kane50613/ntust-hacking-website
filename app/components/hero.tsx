@@ -45,7 +45,7 @@ export const Hero = () => {
       </BlurIn>
       <div className="flex flex-col items-center justify-center gap-4 text-center">
         <m.h1
-          className="text-[10vw] sm:text-[7vw]"
+          className="text-[10vw] sm:text-[7vw] font-bold"
           initial={{
             scale: 0.8,
           }}
