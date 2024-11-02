@@ -58,8 +58,8 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans py-32 gap-16 px-6">
-      <div className="absolute top-0 left-0 w-screen h-screen z-0">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-6 h-[90dvh]">
+      <div className="absolute top-0 left-0 w-screen h-[80dvh] z-0">
         <MouseGlowBackground />
       </div>
       <BlurIn

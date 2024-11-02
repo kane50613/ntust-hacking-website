@@ -1,4 +1,5 @@
 import { events } from "~/db/schema";
+import { SectionTitle } from "../section-title";
 
 export const Events = ({
   eventRecords,
@@ -7,7 +8,7 @@ export const Events = ({
 }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 text-center py-16">
-      <h2 className="text-5xl font-bold">社團課資訊</h2>
+      <SectionTitle>社團課資訊</SectionTitle>
       {eventRecords.map((eventRecord) => (
         <div key={eventRecord.eventId}>
           <h2 className="font-sans text-4xl">{eventRecord.title}</h2>

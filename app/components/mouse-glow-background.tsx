@@ -147,7 +147,7 @@ export const MouseGlowBackground = () => {
 
   return (
     <div
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full h-full overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <style>{`
