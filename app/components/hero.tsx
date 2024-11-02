@@ -1,15 +1,21 @@
-import { m } from "framer-motion";
 import { Button } from "./ui/button";
 import { BlurIn } from "./blur-in";
+import { fadeInFromBottomVariants } from "~/lib/motion-variants";
+import { cn } from "~/lib/utils";
 
-const parts: {
+interface Part {
   text: string;
   delay: number;
   className?: string;
   break?: boolean;
-}[] = [
+}
+
+const glowStyle =
+  "before:blur-lg before:opacity-50 before:absolute before:top-4 before:left-0";
+
+const parts: Part[] = [
   {
-    text: "「你，",
+    text: "你，",
     delay: 0,
     break: true,
   },
@@ -19,18 +25,38 @@ const parts: {
   },
   {
     text: "魔法",
-    className: "text-red-400",
+    className: cn("text-red-400 before:content-['魔法']", glowStyle),
     delay: 1.5,
   },
   {
-    text: "嘛？」",
+    text: "嘛？",
     delay: 2.5,
   },
 ];
 
-export const Hero = () => {
+const redMagicParts: Part[] = [
+  {
+    text: "徐牧遠",
+    className: "text-red-400",
+    delay: 0,
+  },
+  {
+    text: "要請我吃",
+    delay: 1.5,
+    break: true,
+  },
+  {
+    text: "饗食天堂",
+    delay: 2.5,
+    className: cn("before:content-['饗食天堂']", glowStyle),
+  },
+];
+
+export const Hero = ({ isRed }: { isRed: boolean }) => {
+  const renderParts = isRed ? redMagicParts : parts;
+
   return (
-    <div className="flex flex-col items-center justify-center font-sans py-48 gap-16">
+    <div className="flex flex-col items-center justify-center font-sans py-32 gap-16 px-6">
       <BlurIn
         component="div"
         className="flex gap-4 items-center justify-center flex-col"
@@ -44,21 +70,16 @@ export const Hero = () => {
         <p className="text-xl sm:text-2xl">台科大資訊安全研究社</p>
       </BlurIn>
       <div className="flex flex-col items-center justify-center gap-4 text-center">
-        <m.h1
-          className="text-[10vw] sm:text-[7vw] font-bold"
-          initial={{
-            scale: 0.8,
+        <BlurIn
+          component="h1"
+          className="text-[12vw] sm:text-[7vw] leading-tight font-bold"
+          variant={{
+            hidden: { scale: 0.8 },
+            visible: { scale: 1 },
           }}
-          whileInView={{
-            scale: 1,
-          }}
-          transition={{
-            duration: 4,
-            ease: "easeOut",
-          }}
-          viewport={{ once: true }}
+          duration={4}
         >
-          {parts.map((part, index) => (
+          {renderParts.map((part, index) => (
             <BlurIn
               component="span"
               key={index}
@@ -67,35 +88,60 @@ export const Hero = () => {
               className={part.className}
             >
               {part.text}
+              {part.break && <br />}
             </BlurIn>
           ))}
-        </m.h1>
+        </BlurIn>
         <BlurIn
           component="span"
           className="text-primary/85 text-xl"
           delay={4}
           duration={0.5}
         >
-          台科資安社作為頂尖的網路黑魔法重地，擁有龐大的黑魔法教育資源，更培育出多位國家戰略級魔法師
+          台科資安社作為頂尖的網路黑魔法重地，
+          <br />
+          擁有龐大的黑魔法教育資源，更培育出多位國家戰略級魔法師
         </BlurIn>
       </div>
-      <BlurIn
-        component="div"
-        className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-6"
-        delay={4.5}
-        duration={1}
-      >
-        <Button size="lg" className="text-lg w-full sm:w-auto rounded-full">
-          最新社團資訊
-        </Button>
-        <Button
-          size="lg"
-          variant="secondary"
-          className="text-lg w-full sm:w-auto rounded-full"
-        >
-          加入 Discord
-        </Button>
-      </BlurIn>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full">
+        <FadeInButton delay={4.5}>
+          <Button
+            size="lg"
+            className="text-lg w-full sm:w-auto rounded-full h-12"
+          >
+            最新社團資訊
+          </Button>
+        </FadeInButton>
+        <FadeInButton delay={4.75}>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="text-lg w-full sm:w-auto rounded-full h-12"
+          >
+            加入 Discord
+          </Button>
+        </FadeInButton>
+      </div>
     </div>
+  );
+};
+
+const FadeInButton = ({
+  children,
+  delay,
+}: {
+  children: React.ReactNode;
+  delay: number;
+}) => {
+  return (
+    <BlurIn
+      component="button"
+      className="text-lg w-full sm:w-auto rounded-full"
+      delay={delay}
+      duration={0.5}
+      variant={fadeInFromBottomVariants}
+    >
+      {children}
+    </BlurIn>
   );
 };

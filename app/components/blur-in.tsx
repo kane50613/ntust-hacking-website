@@ -1,25 +1,21 @@
 "use client";
 
-import { m, MotionProps } from "framer-motion";
+import { m, MotionProps, Variant } from "framer-motion";
 
 import { FC, PropsWithChildren } from "react";
+import { blurInVariants } from "~/lib/motion-variants";
 
 interface BlurIntProps extends PropsWithChildren {
   // a motion component function
   component?: keyof typeof m;
   className?: string;
   variant?: {
-    hidden: { filter: string; opacity: number };
-    visible: { filter: string; opacity: number };
+    hidden: Variant;
+    visible: Variant;
   };
   delay?: number;
   duration?: number;
 }
-
-const defaultVariants = {
-  hidden: { filter: "blur(10px)", opacity: 0 },
-  visible: { filter: "blur(0px)", opacity: 1 },
-};
 
 export const BlurIn = ({
   children,
@@ -29,7 +25,7 @@ export const BlurIn = ({
   duration = 1,
   delay = 0,
 }: BlurIntProps) => {
-  const combinedVariants = variant || defaultVariants;
+  const combinedVariants = variant || blurInVariants;
 
   const Comp = m[component || "div"] as FC<
     MotionProps & {
