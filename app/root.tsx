@@ -16,6 +16,10 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500..700&display=swap",
   },
+  {
+    rel: "icon",
+    href: "https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg",
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

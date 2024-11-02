@@ -1,7 +1,9 @@
 import { Button } from "./ui/button";
-import { BlurIn } from "./blur-in";
+import { BlurIn } from "./sections/blur-in";
 import { fadeInFromBottomVariants } from "~/lib/motion-variants";
 import { cn } from "~/lib/utils";
+import { FaCalendar, FaDiscord } from "react-icons/fa6";
+import { MouseGlowBackground } from "./mouse-glow-background";
 
 interface Part {
   text: string;
@@ -57,9 +59,12 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
 
   return (
     <div className="flex flex-col items-center justify-center font-sans py-32 gap-16 px-6">
+      <div className="absolute top-0 left-0 w-screen h-screen z-0">
+        <MouseGlowBackground />
+      </div>
       <BlurIn
         component="div"
-        className="flex gap-4 items-center justify-center flex-col"
+        className="flex gap-4 items-center justify-center flex-col pointer-events-none"
         duration={1}
         delay={4}
       >
@@ -69,10 +74,10 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
         />
         <p className="text-xl sm:text-2xl">台科大資訊安全研究社</p>
       </BlurIn>
-      <div className="flex flex-col items-center justify-center gap-4 text-center">
+      <div className="flex flex-col items-center justify-center gap-8 text-center pointer-events-none">
         <BlurIn
           component="h1"
-          className="text-[12vw] sm:text-[7vw] leading-tight font-bold"
+          className="text-6xl sm:text-9xl !leading-snug font-bold"
           variant={{
             hidden: { scale: 0.8 },
             visible: { scale: 1 },
@@ -103,12 +108,13 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
           擁有龐大的黑魔法教育資源，更培育出多位國家戰略級魔法師
         </BlurIn>
       </div>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full z-10">
         <FadeInButton delay={4.5}>
           <Button
             size="lg"
             className="text-lg w-full sm:w-auto rounded-full h-12"
           >
+            <FaCalendar className="w-6" />
             最新社團資訊
           </Button>
         </FadeInButton>
@@ -117,8 +123,16 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
             size="lg"
             variant="secondary"
             className="text-lg w-full sm:w-auto rounded-full h-12"
+            asChild
           >
-            加入 Discord
+            <a
+              href="https://discord.gg/8mZxdsJkvQ"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaDiscord className="w-6" />
+              加入 Discord
+            </a>
           </Button>
         </FadeInButton>
       </div>
