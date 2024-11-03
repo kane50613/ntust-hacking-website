@@ -5,67 +5,24 @@ import React, {
   CSSProperties,
   MouseEventHandler,
   useEffect,
+  useDeferredValue,
 } from "react";
-import { m } from "framer-motion";
+import { GlowingText } from "./glowing-text";
 
-const GlowingText = React.memo(
-  ({
-    word,
-    size,
-    position,
-    rotation,
-    mousePosition,
-  }: {
-    word: string;
-    size: number;
-    position: { x: number; y: number };
-    rotation: number;
-    mousePosition: { x: number; y: number };
-  }) => {
-    const distance = Math.sqrt(
-      Math.pow(position.x - mousePosition.x, 2) +
-        Math.pow(position.y - mousePosition.y, 2)
-    );
+interface Vector {
+  x: number;
+  y: number;
+}
 
-    // Increased sensitivity and brightness for text glow
-    const glowIntensity = Math.max(0, 1 - distance / 300);
+export interface Word {
+  word: string;
+  fontSize: number;
+  position: Vector;
+  width: number;
+  height: number;
+}
 
-    return (
-      <m.div
-        className="absolute inline-block px-2 cursor-default select-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={{
-          fontSize: `${size}rem`,
-          transform: `rotate(${rotation}deg)`,
-          left: position.x,
-          top: position.y,
-          color: `rgba(219, 234, 254, ${0.2 + glowIntensity * 0.6})`, // Lighter base color
-          textShadow:
-            glowIntensity > 0.1
-              ? `
-          0 0 ${glowIntensity * 15}px rgba(239, 246, 255, ${
-            glowIntensity * 0.7
-          }),
-          0 0 ${glowIntensity * 30}px rgba(239, 246, 255, ${
-            glowIntensity * 0.5
-          }),
-          0 0 ${glowIntensity * 45}px rgba(239, 246, 255, ${
-            glowIntensity * 0.3
-          })
-        `
-              : "none",
-          mixBlendMode: "plus-lighter",
-          transition: "color 0.1s ease-out, text-shadow 0.1s ease-out", // Faster transitions
-        }}
-      >
-        {word}
-      </m.div>
-    );
-  }
-);
-
-const words = [
+const wordTemplates = [
   "網站滲透",
   "Kernel Exploit",
   "OSINT",
@@ -84,13 +41,97 @@ const words = [
   "Remote Code Execution",
   "饗食天堂",
   "烏拉呀哈",
+  "台科大資訊安全研究社",
+  "網路釣魚",
+  "惡意代碼",
+  "Malicious Code",
+  "Network Phishing",
+  "CyberSecurity",
+  "漏洞利用",
+  "黑魔法",
+  "台灣網路重砲",
+  "國家戰略級黑魔導",
 ];
 
-const getRandomWord = (index: number) => words[index % words.length];
+const getRandomWord = () =>
+  wordTemplates[Math.floor(Math.random() * wordTemplates.length)];
+
+function generateVerticalAndHorizontalWordClouds() {
+  const center = {
+    x: innerWidth / 2,
+    y: innerHeight / 2,
+  };
+
+  const words: Word[] = [];
+
+  let radius = innerWidth / 10,
+    hasAvailableSpace = true;
+
+  while (hasAvailableSpace) {
+    radius += Math.random() * 50 + 10;
+    hasAvailableSpace = false;
+
+    for (let i = Math.random() * 30; i < 360; i += Math.random() * 50) {
+      const centerPosition = {
+        x: center.x + radius * Math.cos((i * Math.PI) / 180),
+        y: center.y + radius * Math.sin((i * Math.PI) / 180),
+      };
+
+      if (
+        centerPosition.x < 0 ||
+        centerPosition.x > window.innerWidth ||
+        centerPosition.y < 0 ||
+        centerPosition.y > window.innerHeight
+      ) {
+        continue;
+      }
+
+      const word = getRandomWord();
+
+      const fontSizePx = Math.random() * 50 + 15;
+
+      const width = fontSizePx * word.length;
+      const height = fontSizePx;
+
+      const borderX = centerPosition.x - width / 2;
+      const borderY = centerPosition.y - height / 2;
+
+      const overlap = words.find((word) => {
+        return (
+          word.position.x < borderX + width &&
+          word.position.x + word.width > borderX &&
+          word.position.y < borderY + height &&
+          word.position.y + word.height > borderY
+        );
+      });
+
+      hasAvailableSpace = true;
+
+      if (overlap) {
+        continue;
+      }
+
+      words.push({
+        word,
+        fontSize: fontSizePx,
+        position: {
+          x: borderX,
+          y: borderY,
+        },
+        width,
+        height,
+      });
+    }
+  }
+
+  return words;
+}
 
 export const MouseGlowBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: -10000, y: -10000 });
   const [isMounted, setIsMounted] = useState(false);
+
+  const deferredMousePosition = useDeferredValue(mousePosition);
 
   const handleMouseMove = useCallback((e: Parameters<MouseEventHandler>[0]) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -108,41 +149,10 @@ export const MouseGlowBackground = () => {
     };
   }, []);
 
-  const gridConfig = useMemo(() => {
+  const wordConfigs = useMemo(() => {
     if (!isMounted) return [];
 
-    const items = [];
-    const spacingX = 300;
-    const spacingY = 100;
-
-    const cols = Math.ceil(window.innerWidth / spacingX);
-    const rows = Math.ceil(window.innerHeight / spacingY);
-
-    const randomSeeds = Array.from({ length: rows * cols }, () => ({
-      offsetX: Math.random() * 40 - 20,
-      offsetY: Math.random() * 40 - 20,
-      rotation: Math.random() * 20 - 10,
-      size: Math.random() * 0.5 + 1.5,
-      wordIndex: Math.floor(Math.random() * words.length),
-    }));
-
-    let seedIndex = 0;
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const seed = randomSeeds[seedIndex];
-        items.push({
-          word: getRandomWord(seed.wordIndex),
-          position: {
-            x: j * spacingX + seed.offsetX,
-            y: i * spacingY + seed.offsetY,
-          },
-          rotation: seed.rotation,
-          size: seed.size,
-        });
-        seedIndex++;
-      }
-    }
-    return items;
+    return generateVerticalAndHorizontalWordClouds();
   }, [isMounted]);
 
   return (
@@ -193,14 +203,14 @@ export const MouseGlowBackground = () => {
 
       {/* Text layer */}
       <div className="relative w-full h-full text-center">
-        {gridConfig.map((item, i) => (
+        {wordConfigs.map((item, i) => (
           <GlowingText
             key={i}
             word={item.word}
-            size={item.size}
+            size={item.fontSize}
             position={item.position}
-            rotation={item.rotation}
-            mousePosition={mousePosition}
+            rotation={0}
+            mousePosition={deferredMousePosition}
           />
         ))}
       </div>

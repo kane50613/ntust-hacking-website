@@ -13,7 +13,7 @@ interface Part {
 }
 
 const glowStyle =
-  "before:blur-xl before:opacity-50 before:absolute before:top-4 before:left-0";
+  "before:blur-xl before:opacity-75 before:absolute before:top-0 before:left-0";
 
 const parts: Part[] = [
   {
@@ -27,7 +27,7 @@ const parts: Part[] = [
   },
   {
     text: "魔法",
-    className: cn("text-red-400 before:content-['魔法']", glowStyle),
+    className: cn("relative text-red-400 before:content-['魔法']", glowStyle),
     delay: 1.5,
   },
   {
