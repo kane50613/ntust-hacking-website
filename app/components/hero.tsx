@@ -58,7 +58,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans gap-16 px-6 relative min-h-[80dvh] sm:min-h-[90dvh] w-full">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-6 relative min-h-[80dvh] sm:min-h-[90dvh] w-full py-6">
       <div className="absolute top-0 left-0 w-screen h-[80%] z-0">
         <MouseGlowBackground />
       </div>
@@ -99,7 +99,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
         </BlurIn>
         <BlurIn
           component="span"
-          className="text-primary/85 text-xl"
+          className="text-primary/85 text-lg sm:text-xl"
           delay={4}
           duration={0.5}
         >
