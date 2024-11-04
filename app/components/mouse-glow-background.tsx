@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useMemo,
   useCallback,
@@ -130,7 +130,7 @@ function generateVerticalAndHorizontalWordClouds() {
   return words;
 }
 
-export const MouseGlowBackground = () => {
+const MouseGlowBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: -10000, y: -10000 });
   const [isMounted, setIsMounted] = useState(false);
 
@@ -224,3 +224,5 @@ export const MouseGlowBackground = () => {
     </div>
   );
 };
+
+export default MouseGlowBackground;

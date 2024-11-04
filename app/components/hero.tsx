@@ -3,7 +3,9 @@ import { BlurIn } from "./sections/blur-in";
 import { fadeInFromBottomVariants } from "~/lib/motion-variants";
 import { cn } from "~/lib/utils";
 import { FaCalendar, FaDiscord } from "react-icons/fa6";
-import { MouseGlowBackground } from "./mouse-glow-background";
+import { lazy } from "react";
+
+const MouseGlowBackground = lazy(() => import("./mouse-glow-background"));
 
 interface Part {
   text: string;
