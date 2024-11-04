@@ -8,6 +8,7 @@ import React, {
   useDeferredValue,
 } from "react";
 import { GlowingText } from "./glowing-text";
+import { isbot } from "isbot";
 
 interface Vector {
   x: number;
@@ -144,7 +145,7 @@ export const MouseGlowBackground = () => {
   }, []);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(!isbot(navigator.userAgent));
 
     return () => {
       setIsMounted(false);
