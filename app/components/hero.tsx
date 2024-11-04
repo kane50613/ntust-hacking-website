@@ -61,7 +61,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
 
   return (
     <div className="flex flex-col items-center justify-center font-sans gap-16 px-6 relative min-h-[80dvh] sm:min-h-[90dvh] w-full py-6">
-      <div className="absolute top-0 left-0 w-screen h-[80%] z-0">
+      <div className="absolute top-0 left-0 w-[100dvh] h-[80%] z-0">
         <MouseGlowBackground />
       </div>
       <BlurIn
