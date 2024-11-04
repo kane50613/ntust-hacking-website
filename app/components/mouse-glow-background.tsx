@@ -20,6 +20,7 @@ export interface Word {
   position: Vector;
   width: number;
   height: number;
+  delay: number;
 }
 
 const wordTemplates = [
@@ -120,6 +121,7 @@ function generateVerticalAndHorizontalWordClouds() {
         },
         width,
         height,
+        delay: words.length * 0.02,
       });
     }
   }
@@ -209,6 +211,7 @@ export const MouseGlowBackground = () => {
             word={item.word}
             size={item.fontSize}
             position={item.position}
+            delay={item.delay}
             rotation={0}
             mousePosition={deferredMousePosition}
           />
