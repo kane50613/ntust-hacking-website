@@ -29,7 +29,7 @@ export const GlowingText = memo(
     return (
       <BlurIn delay={delay} duration={0.3}>
         <m.div
-          className="absolute inline-block px-2 cursor-default select-none whitespace-nowrap overflow-hidden"
+          className="absolute inline-block px-2 cursor-default select-none whitespace-nowrap"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
