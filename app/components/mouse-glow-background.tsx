@@ -80,10 +80,10 @@ function generateVerticalAndHorizontalWordClouds() {
       };
 
       if (
-        centerPosition.x < 0 ||
-        centerPosition.x > window.innerWidth ||
-        centerPosition.y < 0 ||
-        centerPosition.y > window.innerHeight
+        centerPosition.x < -innerWidth * 0.5 ||
+        centerPosition.x > window.innerWidth * 1.5 ||
+        centerPosition.y < -innerHeight * 0.5 ||
+        centerPosition.y > window.innerHeight * 1.5
       ) {
         continue;
       }
