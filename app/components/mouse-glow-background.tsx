@@ -53,6 +53,13 @@ const wordTemplates = [
   "黑魔法",
   "台灣網路重砲",
   "國家戰略級黑魔導",
+  "蜜月期POPOO",
+  "台科超硬",
+  "HackTheBox Night",
+  "TryHackMe Night",
+  "CTF Battle",
+  "技術分享會",
+  "您都不教",
 ];
 
 const getRandomWord = () =>
