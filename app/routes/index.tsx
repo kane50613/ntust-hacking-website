@@ -4,6 +4,7 @@ import type { ComponentProps, LoaderArgs } from "./+types.index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { Await } from "react-router";
+import { Suspense } from "react";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -13,7 +14,7 @@ export async function loader({ request }: LoaderArgs) {
     url.searchParams.has("red");
 
   return {
-    eventRecords: db.select().from(events),
+    eventRecords: db.select().from(events).execute(),
     isRed,
   };
 }
@@ -34,9 +35,11 @@ export default function Index({
   return (
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
-      <Await resolve={eventRecords}>
-        {(eventRecords) => <Events eventRecords={eventRecords} />}
-      </Await>
+      <Suspense>
+        <Await resolve={eventRecords}>
+          {(eventRecords) => <Events eventRecords={eventRecords} />}
+        </Await>
+      </Suspense>
     </div>
   );
 }
