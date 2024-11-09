@@ -2,7 +2,6 @@ import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 
-// @ts-expect-error: importing renderToReadableStream from react-dom/server.browser
 import { renderToReadableStream } from "react-dom/server.browser";
 
 export default async function handleRequest(
