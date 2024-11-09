@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <MotionLoader>{children}</MotionLoader>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -41,5 +41,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <MotionLoader>
+      <Outlet />
+    </MotionLoader>
+  );
 }
