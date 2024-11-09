@@ -36,7 +36,7 @@ export default function Index({
   return (
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={eventRecords} errorElement={<AsyncError />}>
           {(eventRecords) => <Events eventRecords={eventRecords} />}
         </Await>
