@@ -5,6 +5,7 @@ import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { Await } from "react-router";
 import { Suspense } from "react";
+import { AsyncError } from "~/components/async-error";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -36,7 +37,7 @@ export default function Index({
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
       <Suspense>
-        <Await resolve={eventRecords}>
+        <Await resolve={eventRecords} errorElement={<AsyncError />}>
           {(eventRecords) => <Events eventRecords={eventRecords} />}
         </Await>
       </Suspense>
