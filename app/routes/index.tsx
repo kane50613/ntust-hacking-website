@@ -3,6 +3,7 @@ import { events } from "~/db/schema";
 import type { ComponentProps, LoaderArgs } from "./+types.index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
+import { Await } from "react-router";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -12,7 +13,7 @@ export async function loader({ request }: LoaderArgs) {
     url.searchParams.has("red");
 
   return {
-    eventRecords: await db.select().from(events),
+    eventRecords: db.select().from(events),
     isRed,
   };
 }
@@ -33,7 +34,9 @@ export default function Index({
   return (
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
-      <Events eventRecords={eventRecords} />
+      <Await resolve={eventRecords}>
+        {(eventRecords) => <Events eventRecords={eventRecords} />}
+      </Await>
     </div>
   );
 }
