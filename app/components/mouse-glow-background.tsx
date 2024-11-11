@@ -1,6 +1,5 @@
 import {
   useState,
-  useMemo,
   useCallback,
   CSSProperties,
   MouseEventHandler,
@@ -9,6 +8,7 @@ import {
 } from "react";
 import { GlowingText } from "./glowing-text";
 import { isbot } from "isbot";
+import { AnimatePresence } from "framer-motion";
 
 interface Vector {
   x: number;
@@ -16,6 +16,7 @@ interface Vector {
 }
 
 export interface Word {
+  key: string;
   word: string;
   fontSize: number;
   position: Vector;
@@ -121,6 +122,7 @@ function generateVerticalAndHorizontalWordClouds() {
       }
 
       words.push({
+        key: Math.random().toString(),
         word,
         fontSize: fontSizePx,
         position: {
@@ -139,7 +141,7 @@ function generateVerticalAndHorizontalWordClouds() {
 
 const MouseGlowBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: -10000, y: -10000 });
-  const [isMounted, setIsMounted] = useState(false);
+  const [wordConfigs, setWordConfigs] = useState<Word[]>([]);
 
   const deferredMousePosition = useDeferredValue(mousePosition);
 
@@ -152,18 +154,17 @@ const MouseGlowBackground = () => {
   }, []);
 
   useEffect(() => {
-    setIsMounted(!isbot(navigator.userAgent));
+    if (isbot(navigator.userAgent)) return;
 
-    return () => {
-      setIsMounted(false);
-    };
+    setWordConfigs(generateVerticalAndHorizontalWordClouds());
+
+    const interval = setInterval(
+      () => setWordConfigs(generateVerticalAndHorizontalWordClouds()),
+      5000
+    );
+
+    return () => clearInterval(interval);
   }, []);
-
-  const wordConfigs = useMemo(() => {
-    if (!isMounted) return [];
-
-    return generateVerticalAndHorizontalWordClouds();
-  }, [isMounted]);
 
   return (
     <div
@@ -213,17 +214,19 @@ const MouseGlowBackground = () => {
 
       {/* Text layer */}
       <div className="relative w-full h-full text-center">
-        {wordConfigs.map((item, i) => (
-          <GlowingText
-            key={i}
-            word={item.word}
-            size={item.fontSize}
-            position={item.position}
-            delay={item.delay}
-            rotation={0}
-            mousePosition={deferredMousePosition}
-          />
-        ))}
+        <AnimatePresence>
+          {wordConfigs.map((item) => (
+            <GlowingText
+              key={item.key}
+              word={item.word}
+              size={item.fontSize}
+              position={item.position}
+              delay={item.delay}
+              rotation={0}
+              mousePosition={deferredMousePosition}
+            />
+          ))}
+        </AnimatePresence>
       </div>
 
       {/* overlay darken to bottom */}
