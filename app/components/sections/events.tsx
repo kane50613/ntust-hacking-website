@@ -1,10 +1,10 @@
-import { events } from "~/db/schema";
 import { SectionTitle } from "../section-title";
+import { Info } from "~/routes/+types/index";
 
 export const Events = ({
   eventRecords,
 }: {
-  eventRecords: (typeof events.$inferSelect)[];
+  eventRecords: Awaited<Info["loaderData"]["eventRecords"]>;
 }) => {
   return (
     <div

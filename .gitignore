@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .react-router
-db.sqlite
 dist
 build
 .env
+pg-data

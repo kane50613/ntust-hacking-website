@@ -1,10 +1,18 @@
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
-import { dbConfig } from "./config";
+import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle as drizzleFs } from "drizzle-orm/pglite";
 import * as schema from "./schema";
 
-const client = createClient(dbConfig.dbCredentials);
+async function getDb() {
+  if (process.env.DATABASE_URL) {
+    return drizzle(process.env.DATABASE_URL, {
+      schema,
+    });
+  }
 
-export const db = drizzle(client, {
-  schema,
-});
+  return drizzleFs("./pg-data", {
+    schema,
+    logger: true,
+  });
+}
+
+export const db = await getDb();

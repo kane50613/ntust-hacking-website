@@ -2,10 +2,8 @@ import { z } from "zod";
 
 export const env = z
   .object({
-    TURSO_URL: z.string().url().optional(),
-    TURSO_AUTH_TOKEN: z.string().optional(),
+    DATABASE_URL: z.string().url().optional(),
   })
   .parse({
-    TURSO_URL: process.env.TURSO_URL,
-    TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
+    DATABASE_URL: process.env.DATABASE_URL,
   });

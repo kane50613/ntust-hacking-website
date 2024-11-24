@@ -1,11 +1,12 @@
 import { db } from "~/db";
-import { events } from "~/db/schema";
+import { enrolls, events } from "~/db/schema";
 import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { Await } from "react-router";
 import { Suspense } from "react";
 import { AsyncError } from "~/components/async-error";
+import { sql } from "drizzle-orm";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -15,7 +16,24 @@ export async function loader({ request }: Route.LoaderArgs) {
     url.searchParams.has("red");
 
   return {
-    eventRecords: db.select().from(events).execute(),
+    eventRecords: db.query.events
+      .findMany({
+        with: {
+          links: true,
+          feedbacks: {
+            columns: {
+              rating: true,
+              comment: true,
+            },
+          },
+        },
+        extras: {
+          enrolls: db
+            .$count(enrolls, sql`"enrolls"."eventId" = ${events.eventId}`)
+            .as("enrollCount"),
+        },
+      })
+      .execute(),
     isRed,
   };
 }

@@ -1,56 +1,53 @@
 import { relations } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
 
-const createdAt = integer({
-  mode: "timestamp",
-})
-  .notNull()
-  .$defaultFn(() => new Date());
+const createdAt = timestamp({ mode: "date" }).notNull().defaultNow();
 
-export const events = sqliteTable("events", {
-  eventId: integer().primaryKey({ autoIncrement: true }),
-  title: text(),
-  description: text(),
-  date: integer({
-    mode: "timestamp",
-  }),
+export const events = pgTable("events", {
+  eventId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  title: varchar(),
+  description: varchar(),
+  date: timestamp({ mode: "date" }),
   createdAt,
 });
 
-export const eventLinks = sqliteTable("eventLinks", {
-  linkId: integer().primaryKey({ autoIncrement: true }),
+export const eventLinks = pgTable("eventLinks", {
+  linkId: integer().primaryKey().generatedByDefaultAsIdentity(),
   eventId: integer().notNull(),
-  link: text().notNull(),
-  label: text(),
+  link: varchar().notNull(),
+  label: varchar(),
   createdAt,
 });
 
-export const users = sqliteTable("users", {
-  userId: integer().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-  email: text().unique(),
+export const users = pgTable("users", {
+  userId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar().notNull(),
+  email: varchar().unique(),
   createdAt,
 });
 
-export const enrolls = sqliteTable("enrolls", {
-  enrollId: integer().primaryKey({ autoIncrement: true }),
+export const enrolls = pgTable("enrolls", {
+  enrollId: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer()
     .notNull()
     .references(() => users.userId),
-  eventId: integer().notNull(),
+  eventId: integer()
+    .notNull()
+    .references(() => events.eventId),
   createdAt,
 });
 
-export const feedbacks = sqliteTable("feedbacks", {
-  feedbackId: integer().primaryKey({ autoIncrement: true }),
+export const feedbacks = pgTable("feedbacks", {
+  feedbackId: integer().primaryKey().generatedByDefaultAsIdentity(),
   eventId: integer()
     .notNull()
     .references(() => events.eventId),
   userId: integer()
     .notNull()
     .references(() => users.userId),
-  comment: text(),
+  comment: varchar(),
   createdAt,
+  rating: integer().notNull(),
 });
 
 export const eventRelations = relations(events, ({ many }) => ({
@@ -64,14 +61,30 @@ export const userRelations = relations(users, ({ many }) => ({
 }));
 
 export const enrollRelations = relations(enrolls, ({ one }) => ({
-  event: one(events),
+  event: one(events, {
+    fields: [enrolls.eventId],
+    references: [events.eventId],
+  }),
+  user: one(users, {
+    fields: [enrolls.userId],
+    references: [users.userId],
+  }),
 }));
 
 export const feedbackRelations = relations(feedbacks, ({ one }) => ({
-  event: one(events),
-  user: one(users),
+  event: one(events, {
+    fields: [feedbacks.eventId],
+    references: [events.eventId],
+  }),
+  user: one(users, {
+    fields: [feedbacks.userId],
+    references: [users.userId],
+  }),
 }));
 
 export const eventLinkRelations = relations(eventLinks, ({ one }) => ({
-  event: one(events),
+  event: one(events, {
+    fields: [eventLinks.eventId],
+    references: [events.eventId],
+  }),
 }));

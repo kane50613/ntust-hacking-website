@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import "./app.css";
 import { MotionLoader } from "./components/motion-loader";
+import { Footer } from "./components/footer";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -33,6 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <Footer />
         <ScrollRestoration />
         <Scripts />
       </body>
