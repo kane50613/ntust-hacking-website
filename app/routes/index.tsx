@@ -1,13 +1,13 @@
 import { db } from "~/db";
 import { events } from "~/db/schema";
-import type { ComponentProps, LoaderArgs } from "./+types.index";
+import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { Await } from "react-router";
 import { Suspense } from "react";
 import { AsyncError } from "~/components/async-error";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
 
   const isRed =
@@ -32,7 +32,7 @@ export function meta() {
 
 export default function Index({
   loaderData: { eventRecords, isRed },
-}: ComponentProps) {
+}: Route.ComponentProps) {
   return (
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
