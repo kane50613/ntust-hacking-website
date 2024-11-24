@@ -4,6 +4,9 @@ export default {
   darkMode: ["class"],
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    container: {
+      padding: "2rem",
+    },
     extend: {
       fontFamily: {
         sans: ["Noto Serif TC", "ui-sans-serif", "system-ui"],

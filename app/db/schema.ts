@@ -11,14 +11,6 @@ export const events = pgTable("events", {
   createdAt,
 });
 
-export const eventLinks = pgTable("eventLinks", {
-  linkId: integer().primaryKey().generatedByDefaultAsIdentity(),
-  eventId: integer().notNull(),
-  link: varchar().notNull(),
-  label: varchar(),
-  createdAt,
-});
-
 export const users = pgTable("users", {
   userId: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar().notNull(),
@@ -51,7 +43,6 @@ export const feedbacks = pgTable("feedbacks", {
 });
 
 export const eventRelations = relations(events, ({ many }) => ({
-  links: many(eventLinks),
   enrolls: many(enrolls),
   feedbacks: many(feedbacks),
 }));
@@ -79,12 +70,5 @@ export const feedbackRelations = relations(feedbacks, ({ one }) => ({
   user: one(users, {
     fields: [feedbacks.userId],
     references: [users.userId],
-  }),
-}));
-
-export const eventLinkRelations = relations(eventLinks, ({ one }) => ({
-  event: one(events, {
-    fields: [eventLinks.eventId],
-    references: [events.eventId],
   }),
 }));

@@ -13,7 +13,7 @@ export const Footer = () => (
         rel="noopener noreferrer"
         className="text-muted-foreground"
       >
-        第一章 魔法的起源 (GitHub)
+        第一章：魔法的起源 (GitHub)
       </a>
     </footer>
   </>

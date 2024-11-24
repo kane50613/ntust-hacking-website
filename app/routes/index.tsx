@@ -7,6 +7,7 @@ import { Await } from "react-router";
 import { Suspense } from "react";
 import { AsyncError } from "~/components/async-error";
 import { sql } from "drizzle-orm";
+import { seedDb } from "~/db/seed";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -15,11 +16,12 @@ export async function loader({ request }: Route.LoaderArgs) {
     request.headers.get("user-agent")?.includes("Red") ||
     url.searchParams.has("red");
 
+  if (!(await db.$count(events))) await seedDb();
+
   return {
     eventRecords: db.query.events
       .findMany({
         with: {
-          links: true,
           feedbacks: {
             columns: {
               rating: true,

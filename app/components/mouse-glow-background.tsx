@@ -14,9 +14,30 @@ import {
   Word,
 } from "~/lib/word-clouds";
 
+function useIsFocused() {
+  const [isFocused, setIsFocused] = useState(true);
+
+  useEffect(() => {
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
+
+  return isFocused;
+}
+
 const MouseGlowBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: -10000, y: -10000 });
   const [wordConfigs, setWordConfigs] = useState<Word[]>([]);
+
+  const isFocused = useIsFocused();
 
   const deferredMousePosition = useDeferredValue(mousePosition);
 
@@ -29,7 +50,7 @@ const MouseGlowBackground = () => {
   }, []);
 
   useEffect(() => {
-    if (isbot(navigator.userAgent)) return;
+    if (isbot(navigator.userAgent) || !isFocused) return;
 
     setWordConfigs(generateVerticalAndHorizontalWordClouds());
 
@@ -39,7 +60,7 @@ const MouseGlowBackground = () => {
     );
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isFocused]);
 
   return (
     <div
