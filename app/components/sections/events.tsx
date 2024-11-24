@@ -12,11 +12,11 @@ export const Events = ({
 }) => {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-12 text-center py-16 w-full"
+      className="flex flex-col items-center justify-center gap-12 text-center py-16 container"
       id="events"
     >
       <SectionTitle>社團課資訊</SectionTitle>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 container w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <Suspense
           fallback={Array.from({ length: 5 }, (_, i) => (
             <EventCardSkeleton key={i} />

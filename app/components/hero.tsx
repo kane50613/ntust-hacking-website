@@ -60,22 +60,10 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative min-h-[80dvh] sm:min-h-[90dvh] w-full py-6">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-32 mt-16 w-full">
       <div className="absolute top-0 left-0 w-full h-[80%] z-0">
         <MouseGlowBackground />
       </div>
-      <BlurIn
-        component="div"
-        className="flex gap-4 items-center justify-center flex-col pointer-events-none"
-        duration={1}
-        delay={4}
-      >
-        <img
-          src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg?w=300&h=300"
-          className="rounded-full w-20 aspect-square shadow-lg"
-        />
-        <p className="text-xl sm:text-2xl">台科大資訊安全研究社</p>
-      </BlurIn>
       <div className="flex flex-col items-center justify-center gap-8 text-center pointer-events-none">
         <BlurIn
           component="h1"
