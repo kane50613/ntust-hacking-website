@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -37,3 +38,31 @@ export const EventCard = ({
     </Card>
   );
 };
+
+export const EventCardSkeleton = () => (
+  <Card className="text-start flex flex-col w-full">
+    <CardHeader>
+      <Skeleton className="w-1/2">
+        <p className="opacity-0 text-sm pointer-events-none">date</p>
+      </Skeleton>
+      <Skeleton className="w-full">
+        <p className="text-2xl opacity-0 pointer-events-none">title</p>
+      </Skeleton>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      <Skeleton className="w-full">
+        <p className="text-sm opacity-0 pointer-events-none">description</p>
+      </Skeleton>
+    </CardContent>
+    <CardFooter>
+      <Skeleton>
+        <Button
+          disabled
+          className="bg-transparent text-transparent pointer-events-none"
+        >
+          立刻報名
+        </Button>
+      </Skeleton>
+    </CardFooter>
+  </Card>
+);

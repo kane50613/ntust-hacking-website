@@ -3,9 +3,6 @@ import { enrolls, events } from "~/db/schema";
 import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
-import { Await } from "react-router";
-import { Suspense } from "react";
-import { AsyncError } from "~/components/async-error";
 import { sql } from "drizzle-orm";
 import { seedDb } from "~/db/seed";
 
@@ -56,11 +53,7 @@ export default function Index({
   return (
     <div className="flex flex-col items-center justify-center">
       <Hero isRed={isRed} />
-      <Suspense fallback={<Events eventRecords={[]} />}>
-        <Await resolve={eventRecords} errorElement={<AsyncError />}>
-          {(eventRecords) => <Events eventRecords={eventRecords} />}
-        </Await>
-      </Suspense>
+      <Events eventRecords={eventRecords} />
     </div>
   );
 }
