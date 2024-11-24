@@ -54,3 +54,7 @@ export async function seedDb() {
 
   console.log("Seeded database");
 }
+
+await seedDb();
+
+process.exit(0);

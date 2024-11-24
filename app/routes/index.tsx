@@ -4,7 +4,6 @@ import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { sql } from "drizzle-orm";
-import { seedDb } from "~/db/seed";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -12,8 +11,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   const isRed =
     request.headers.get("user-agent")?.includes("Red") ||
     url.searchParams.has("red");
-
-  if (!(await db.$count(events))) await seedDb();
 
   return {
     eventRecords: db.query.events

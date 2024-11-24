@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "react-router typegen",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push && bun app/db/seed.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.13",
