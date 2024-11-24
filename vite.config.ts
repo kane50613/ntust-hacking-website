@@ -9,9 +9,6 @@ export default defineConfig({
     target: "esnext",
   },
   esbuild: {
-    supported: {
-      "top-level-await": true,
-    },
     define: {
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
       // magic to make tree-shaking work!
