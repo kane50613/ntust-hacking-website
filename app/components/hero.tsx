@@ -60,7 +60,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-32 mt-16 w-full">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-32 pt-16 w-full">
       <div className="absolute top-0 left-0 w-full h-[80%] z-0">
         <MouseGlowBackground />
       </div>
