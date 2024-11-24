@@ -3,7 +3,7 @@ import { enrolls, events } from "~/db/schema";
 import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
-import { sql } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -28,6 +28,7 @@ export async function loader({ request }: Route.LoaderArgs) {
             .$count(enrolls, sql`"enrolls"."eventId" = ${events.eventId}`)
             .as("enrollCount"),
         },
+        orderBy: desc(events.date),
       })
       .execute(),
     isRed,
