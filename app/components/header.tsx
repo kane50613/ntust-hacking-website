@@ -56,7 +56,7 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-full h-10">
+        <Button variant="outline" className="rounded-full h-10 px-2">
           <img
             src={user.avatar}
             className="rounded-full w-6 aspect-square shadow-lg"
@@ -78,7 +78,7 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
 };
 
 const UserSkeleton = () => (
-  <Button variant="outline" className="rounded-full h-10">
+  <Button variant="outline" className="rounded-full h-10 px-2">
     <Skeleton className="w-6 aspect-square shadow-lg rounded-full" />
     <Skeleton className="text-sm">
       <p className="opacity-0 pointer-events-none">name</p>
