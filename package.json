@@ -12,8 +12,6 @@
     "db:push": "drizzle-kit push && bun app/db/seed.ts"
   },
   "dependencies": {
-    "@discordeno/rest": "^19.0.0",
-    "@discordeno/utils": "^19.0.0",
     "@electric-sql/pglite": "^0.2.13",
     "@faker-js/faker": "^9.2.0",
     "@neondatabase/serverless": "^0.10.3",
@@ -23,6 +21,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@react-router/cloudflare": "7.0.1",
     "@react-router/dev": "7.0.1",
+    "@react-router/fs-routes": "^7.0.1",
     "@react-router/node": "7.0.1",
     "@tailwindcss/typography": "^0.5.15",
     "class-variance-authority": "^0.7.0",
@@ -42,6 +41,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@discordeno/types": "^19.0.0",
     "@eslint/js": "^9.15.0",
     "@types/node": "^22.9.3",
     "@types/react": "^18.3.12",

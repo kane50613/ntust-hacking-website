@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { EventCard, EventCardSkeleton } from "../event-card";
 import { SectionTitle } from "../section-title";
-import { Info } from "~/routes/+types/index";
+import { Info } from "~/routes/+types/_index";
 import { Await } from "react-router";
 import { AsyncError } from "../async-error";
 

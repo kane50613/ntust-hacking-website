@@ -1,6 +1,6 @@
 import { db } from "~/db";
 import { enrolls, events } from "~/db/schema";
-import type { Route } from "~/routes/+types/index";
+import type { Route } from "~/routes/+types/_index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { desc, eq, sql } from "drizzle-orm";
