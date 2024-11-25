@@ -10,6 +10,11 @@ import "./app.css";
 import { MotionLoader } from "./components/motion-loader";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
+import { Route } from "./+types/root";
+import { getSessionFromRequest } from "./session";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
+import { users } from "./db/schema";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,6 +47,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await getSessionFromRequest(request);
+
+  if (session.data.userId) {
+    return {
+      user: db.query.users
+        .findFirst({
+          where: eq(users.userId, session.data.userId),
+        })
+        .execute(),
+    };
+  }
 }
 
 export default function App() {

@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "./ui/button";
 
 export const Header = () => (
@@ -9,14 +10,16 @@ export const Header = () => (
       }}
     />
     <div className="flex gap-4 items-center h-full container relative">
-      <img
-        src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg"
-        className="rounded-full w-10 aspect-square shadow-lg"
-      />
+      <a href="#">
+        <img
+          src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg"
+          className="rounded-full w-10 aspect-square shadow-lg"
+        />
+      </a>
       <p className="hidden sm:block">台科大資訊安全研究社</p>
       <div className="flex-grow"></div>
-      <Button variant="outline" className="rounded-full h-10">
-        社員登入
+      <Button variant="outline" className="rounded-full h-10" asChild>
+        <Link to="/auth">社員登入</Link>
       </Button>
     </div>
   </header>

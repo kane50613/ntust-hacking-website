@@ -8,6 +8,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
+import { useMemo } from "react";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -19,14 +20,20 @@ export const EventCard = ({
 }: {
   event: Awaited<Info["loaderData"]["eventRecords"]>[number];
 }) => {
+  const parts = useMemo(() => {
+    const parts = [`${event.enrolls} 人`];
+
+    if (event.date) {
+      parts.push(dateFormatter.format(event.date));
+    }
+
+    return parts.join(" • ");
+  }, [event]);
+
   return (
     <Card className="text-start flex flex-col">
       <CardHeader>
-        {event.date && (
-          <p className="text-sm text-muted-foreground">
-            {dateFormatter.format(event.date)}
-          </p>
-        )}
+        <p className="text-sm text-muted-foreground">{parts}</p>
         <CardTitle className="text-2xl">{event.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">

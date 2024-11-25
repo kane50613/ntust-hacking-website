@@ -10,9 +10,15 @@ export default defineConfig({
   },
   esbuild: {
     define: {
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      ...Object.fromEntries(
+        Object.entries(process.env).map(([key, value]) => [
+          `process.env.${key}`,
+          JSON.stringify(value),
+        ])
+      ),
       // magic to make tree-shaking work!
       "process.env.DATABASE_URL": JSON.stringify(process.env.DATABASE_URL ?? 0),
+
     },
   },
   css: {

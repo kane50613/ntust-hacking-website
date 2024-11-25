@@ -16,7 +16,7 @@ export const Events = ({
       id="events"
     >
       <SectionTitle>社團課資訊</SectionTitle>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
         <Suspense
           fallback={Array.from({ length: 5 }, (_, i) => (
             <EventCardSkeleton key={i} />
