@@ -20,7 +20,7 @@ export const EnrollButton = ({
   return (
     <>
       <SignInDialog open={isOpen} setOpen={setIsOpen} />
-      {event.enrolls.length ? (
+      {event.enrolls?.length ? (
         <EnrolledButton />
       ) : (
         <Button

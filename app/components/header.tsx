@@ -5,6 +5,13 @@ import type { Info } from "~/+types/root";
 import { ChevronDown } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import { useRootLoaderData } from "~/hook/useRootLoaderData";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { useJsonFetcher } from "~/hook/use-json-fetcher";
 
 export const Header = () => {
   const { user } = useRootLoaderData();
@@ -37,6 +44,8 @@ export const Header = () => {
 };
 
 const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
+  const [signOut, signOutFetcher] = useJsonFetcher("/sign-out");
+
   if (!user)
     return (
       <Button variant="outline" className="rounded-full h-10" asChild>
@@ -45,14 +54,26 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
     );
 
   return (
-    <Button variant="outline" className="rounded-full h-10">
-      <img
-        src={user.avatar}
-        className="rounded-full w-6 aspect-square shadow-lg"
-      />
-      <p className="text-sm">{user.name}</p>
-      <ChevronDown className="h-4 w-4" />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="rounded-full h-10">
+          <img
+            src={user.avatar}
+            className="rounded-full w-6 aspect-square shadow-lg"
+          />
+          <p className="text-sm">{user.name}</p>
+          <ChevronDown className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem
+          onClick={() => signOut(null)}
+          disabled={signOutFetcher.state !== "idle"}
+        >
+          登出
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
