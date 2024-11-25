@@ -3,9 +3,6 @@ import { BlurIn } from "./sections/blur-in";
 import { fadeInFromBottomVariants } from "~/lib/motion-variants";
 import { cn } from "~/lib/utils";
 import { FaCalendar, FaDiscord } from "react-icons/fa6";
-import { lazy } from "react";
-
-const MouseGlowBackground = lazy(() => import("./mouse-glow-background"));
 
 interface Part {
   text: string;
@@ -60,11 +57,8 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative pb-32 pt-48 w-full">
-      <div className="absolute top-0 left-0 w-full h-[80%] z-0">
-        <MouseGlowBackground />
-      </div>
-      <div className="flex flex-col items-center justify-center gap-8 text-center pointer-events-none">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-32 w-full pointer-events-none">
+      <div className="flex flex-col items-center justify-center gap-8 text-center">
         <BlurIn
           component="h1"
           className="text-5xl sm:text-9xl !leading-snug font-bold"
@@ -98,7 +92,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
           擁有龐大的黑魔法教育資源，更培育出多位國家戰略級魔法師
         </BlurIn>
       </div>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full z-10">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full z-10 [&>button]:pointer-events-auto">
         <FadeInButton delay={4.5}>
           <Button
             size="lg"

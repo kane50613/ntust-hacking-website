@@ -4,6 +4,7 @@ import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
 import { desc, sql } from "drizzle-orm";
+import { lazy } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -45,13 +46,22 @@ export function meta() {
   ];
 }
 
+const MouseGlowBackground = lazy(
+  () => import("../components/mouse-glow-background")
+);
+
 export default function Index({
   loaderData: { eventRecords, isRed },
 }: Route.ComponentProps) {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <Hero isRed={isRed} />
-      <Events eventRecords={eventRecords} />
-    </div>
+    <>
+      <div className="absolute top-0 left-0 w-full h-[80dvh] z-0">
+        <MouseGlowBackground />
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <Hero isRed={isRed} />
+        <Events eventRecords={eventRecords} />
+      </div>
+    </>
   );
 }

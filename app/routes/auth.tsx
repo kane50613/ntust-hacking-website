@@ -95,6 +95,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     avatar: avatarUrl(discordUser.id, discordUser.discriminator, {
       avatar: discordUser.avatar ?? undefined,
     }),
+    discordId: BigInt(discordUser.id),
   };
 
   const user = await db

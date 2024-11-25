@@ -15,6 +15,7 @@ import { getSessionFromRequest } from "./session";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { users } from "./db/schema";
+import { Toaster } from "./components/ui/sonner";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,9 +40,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <MotionLoader>
+          <Header />
+          {children}
+          <Footer />
+        </MotionLoader>
+        <Toaster richColors />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -66,9 +70,5 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function App() {
-  return (
-    <MotionLoader>
-      <Outlet />
-    </MotionLoader>
-  );
+  return <Outlet />;
 }

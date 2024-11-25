@@ -8,18 +8,21 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
+import { EnrollButton } from "./enroll-button";
+import { useRootLoaderData } from "~/hook/useRootLoaderData";
+import { Await } from "react-router";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
   timeStyle: "short",
 });
 
-export const EventCard = ({
-  event,
-}: {
-  event: Awaited<Info["loaderData"]["eventRecords"]>[number];
-}) => {
+export type Event = Awaited<Info["loaderData"]["eventRecords"]>[number];
+
+export const EventCard = ({ event }: { event: Event }) => {
+  const { user } = useRootLoaderData();
+
   const parts = useMemo(() => {
     const parts = [`${event.enrolls} 人`];
 
@@ -40,7 +43,11 @@ export const EventCard = ({
         <p className="text-sm text-primary/90">{event.description}</p>
       </CardContent>
       <CardFooter>
-        <Button>立刻報名</Button>
+        <Suspense fallback={<EnrollButton user={undefined} event={event} />}>
+          <Await resolve={user}>
+            {(user) => <EnrollButton user={user} event={event} />}
+          </Await>
+        </Suspense>
       </CardFooter>
     </Card>
   );

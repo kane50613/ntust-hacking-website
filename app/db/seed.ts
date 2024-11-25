@@ -28,8 +28,10 @@ export async function seedDb() {
     .insert(users)
     .values(
       Array.from({ length: 10 }, () => ({
+        discordId: faker.number.bigInt(),
         name: faker.person.fullName(),
         email: faker.internet.email(),
+        avatar: faker.image.avatar(),
       }))
     )
     .returning();

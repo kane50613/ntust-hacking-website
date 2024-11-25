@@ -1,16 +1,16 @@
-import { Await, Link, useRouteLoaderData } from "react-router";
+import { Await, Link } from "react-router";
 import { Button } from "./ui/button";
-import { loader } from "~/root";
 import { Suspense } from "react";
 import type { Info } from "~/+types/root";
 import { ChevronDown } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
+import { useRootLoaderData } from "~/hook/useRootLoaderData";
 
 export const Header = () => {
-  const { user } = useRouteLoaderData<typeof loader>("root") ?? {};
+  const { user } = useRootLoaderData();
 
   return (
-    <header className="fixed h-20 w-full top-0 left-0 z-50 flex justify-center">
+    <header className="sticky h-20 w-full top-0 left-0 z-50 flex justify-center pointer-events-none">
       <div
         className="backdrop-blur-sm absolute w-full h-full top-0 left-0 from-background to-transparent bg-gradient-to-b pointer-events-none"
         style={{
@@ -18,17 +18,19 @@ export const Header = () => {
         }}
       />
       <div className="flex gap-4 items-center h-full container relative">
-        <a href="#">
+        <Link to="/" className="pointer-events-auto flex items-center">
           <img
             src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg"
             className="rounded-full w-10 aspect-square shadow-lg"
           />
-        </a>
-        <p className="hidden sm:block">台科大資訊安全研究社</p>
+          <p className="ml-2 hidden sm:block">台科大資訊安全研究社</p>
+        </Link>
         <div className="flex-grow"></div>
-        <Suspense fallback={<UserSkeleton />}>
-          <Await resolve={user}>{(user) => <User user={user} />}</Await>
-        </Suspense>
+        <div className="pointer-events-auto">
+          <Suspense fallback={<UserSkeleton />}>
+            <Await resolve={user}>{(user) => <User user={user} />}</Await>
+          </Suspense>
+        </div>
       </div>
     </header>
   );

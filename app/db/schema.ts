@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+  bigint,
+  integer,
+  pgTable,
+  timestamp,
+  uniqueIndex,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 const createdAt = timestamp({ mode: "date" }).notNull().defaultNow();
 
@@ -13,22 +20,27 @@ export const events = pgTable("events", {
 
 export const users = pgTable("users", {
   userId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  discordId: bigint({ mode: "bigint" }).notNull().unique(),
   name: varchar().notNull(),
   email: varchar().unique(),
   avatar: varchar().notNull(),
   createdAt,
 });
 
-export const enrolls = pgTable("enrolls", {
-  enrollId: integer().primaryKey().generatedByDefaultAsIdentity(),
-  userId: integer()
-    .notNull()
-    .references(() => users.userId),
-  eventId: integer()
-    .notNull()
-    .references(() => events.eventId),
-  createdAt,
-});
+export const enrolls = pgTable(
+  "enrolls",
+  {
+    enrollId: integer().primaryKey().generatedByDefaultAsIdentity(),
+    userId: integer()
+      .notNull()
+      .references(() => users.userId),
+    eventId: integer()
+      .notNull()
+      .references(() => events.eventId),
+    createdAt,
+  },
+  (table) => [uniqueIndex().on(table.userId, table.eventId)]
+);
 
 export const feedbacks = pgTable("feedbacks", {
   feedbackId: integer().primaryKey().generatedByDefaultAsIdentity(),
