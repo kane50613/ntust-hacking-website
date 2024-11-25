@@ -3,12 +3,12 @@ import { redirect } from "react-router";
 import { commitSession, getSessionFromRequest } from "~/session";
 import { db } from "~/db";
 import { users } from "~/db/schema";
-import { avatarUrl } from "@discordeno/utils";
 import {
   fetchTokenFromCode,
   getDiscordUser,
   getOAuthUrl,
 } from "~/lib/discord.server";
+import { DiscordUser } from "@discordeno/types";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
@@ -30,9 +30,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const payload = {
     name: discordUser.global_name ?? discordUser.username,
     email: discordUser.email,
-    avatar: avatarUrl(discordUser.id, discordUser.discriminator, {
-      avatar: discordUser.avatar ?? undefined,
-    }),
+    avatar: avatarUrl(discordUser),
     discordId: BigInt(discordUser.id),
   };
 
@@ -55,4 +53,15 @@ export async function loader({ request }: Route.LoaderArgs) {
       "Set-Cookie": await commitSession(session),
     },
   });
+}
+
+function avatarUrl(user: DiscordUser) {
+  const format = user.avatar?.startsWith("a_") ? "gif" : "png";
+
+  if (user.avatar)
+    return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${format}`;
+
+  return `https://cdn.discordapp.com/embed/avatars/${
+    Number(user.discriminator) % 5
+  }.${format}`;
 }
