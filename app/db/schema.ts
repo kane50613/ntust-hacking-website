@@ -15,7 +15,7 @@ export const users = pgTable("users", {
   userId: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar().notNull(),
   email: varchar().unique(),
-  avatar: varchar(),
+  avatar: varchar().notNull(),
   createdAt,
 });
 

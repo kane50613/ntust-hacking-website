@@ -61,6 +61,8 @@ export async function loader({ request }: Route.LoaderArgs) {
         .execute(),
     };
   }
+
+  return {};
 }
 
 export default function App() {
