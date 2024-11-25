@@ -18,7 +18,6 @@ export default defineConfig({
       ),
       // magic to make tree-shaking work!
       "process.env.DATABASE_URL": JSON.stringify(process.env.DATABASE_URL ?? 0),
-
     },
   },
   css: {

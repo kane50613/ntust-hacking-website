@@ -24,7 +24,7 @@ export const EventCard = ({ event }: { event: Event }) => {
   const { user } = useRootLoaderData();
 
   const parts = useMemo(() => {
-    const parts = [`${event.enrolls} 人`];
+    const parts = [`${event.enrollsCount} 人`];
 
     if (event.date) {
       parts.push(dateFormatter.format(event.date));

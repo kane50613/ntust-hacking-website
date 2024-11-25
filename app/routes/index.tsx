@@ -3,11 +3,14 @@ import { enrolls, events } from "~/db/schema";
 import type { Route } from "~/routes/+types/index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
-import { desc, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { lazy } from "react";
+import { getSessionFromRequest } from "~/session";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
+
+  const session = await getSessionFromRequest(request);
 
   const isRed =
     request.headers.get("user-agent")?.includes("Red") ||
@@ -23,9 +26,14 @@ export async function loader({ request }: Route.LoaderArgs) {
               comment: true,
             },
           },
+          enrolls: session.data.userId
+            ? {
+                where: eq(enrolls.userId, session.data.userId),
+              }
+            : undefined,
         },
         extras: {
-          enrolls: db
+          enrollsCount: db
             .$count(enrolls, sql`"enrolls"."eventId" = ${events.eventId}`)
             .as("enrollCount"),
         },
