@@ -17,8 +17,13 @@ import { DeleteEventDialog } from "../dialog/delete-event-dialog";
 import { SquarePen, Trash } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
-  dateStyle: "short",
-  timeStyle: "short",
+  weekday: "short",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour12: true,
+  hour: "numeric",
+  minute: "numeric",
 });
 
 export type Event = Awaited<Info["loaderData"]["eventRecords"]>[number];
@@ -27,7 +32,7 @@ export const EventCard = ({ event }: { event: Event }) => {
   const { user } = useRootLoaderData();
 
   const parts = useMemo(() => {
-    const parts = [`${event.enrollsCount} 人`];
+    const parts = [`${event.enrollsCount} 人報名`];
 
     if (event.rating) {
       parts.push(`評分 ${event.rating}`);
