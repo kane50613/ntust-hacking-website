@@ -25,7 +25,7 @@ export const Events = ({
       <SectionTitle>社團課資訊</SectionTitle>
       <div
         className={cn(
-          "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full relative",
+          "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full relative",
           !showFull && "h-96 overflow-y-hidden"
         )}
       >
@@ -49,7 +49,7 @@ export const Events = ({
         </Suspense>
         {!showFull && (
           <button
-            className="w-full bg-gradient-to-b from-background/50 to-background absolute bottom-0 left-0 h-24 flex justify-center z-10 items-center"
+            className="w-full bg-gradient-to-b from-transparent to-background to-60% absolute bottom-0 left-0 h-24 flex justify-center z-10 items-center"
             onClick={() => setShowFull(true)}
           >
             顯示更多資訊 <ChevronDown className="w-4 ml-2" />
