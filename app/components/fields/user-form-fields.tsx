@@ -24,7 +24,7 @@ export const UserFormFields = () => {
       </RichInputField>
       <RichInputField name="role" control={form.control} label="權限">
         {(field) => (
-          <Select {...field}>
+          <Select {...field} onValueChange={field.onChange}>
             <SelectTrigger>
               <SelectValue placeholder="選擇權限" />
             </SelectTrigger>
