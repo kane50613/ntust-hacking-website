@@ -6,6 +6,7 @@ import { Events } from "~/components/sections/events";
 import { desc, eq, sql } from "drizzle-orm";
 import { lazy } from "react";
 import { getSessionFromRequest } from "~/session";
+import { About } from "~/components/sections/about";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -69,6 +70,7 @@ export default function Index({
       <div className="flex flex-col items-center justify-center">
         <Hero isRed={isRed} />
         <Events eventRecords={eventRecords} />
+        <About />
       </div>
     </>
   );

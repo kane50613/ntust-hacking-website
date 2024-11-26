@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { BlurIn } from "./sections/blur-in";
+import { BlurIn } from "./blur-in";
 import { fadeInFromBottomVariants } from "~/lib/motion-variants";
 import { cn } from "~/lib/utils";
 import { FaCalendar, FaDiscord } from "react-icons/fa6";
