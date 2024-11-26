@@ -57,7 +57,7 @@ export const Hero = ({ isRed }: { isRed: boolean }) => {
   const renderParts = isRed ? redMagicParts : parts;
 
   return (
-    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-32 w-full pointer-events-none">
+    <div className="flex flex-col items-center justify-center font-sans gap-16 px-8 relative py-24 w-full pointer-events-none">
       <div className="flex flex-col items-center justify-center gap-8 text-center">
         <BlurIn
           component="h1"
