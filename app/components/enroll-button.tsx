@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { SignInDialog } from "./dialog/sign-in-dialog";
 import { Button } from "./ui/button";
-import { Event } from "./card/event-card";
-import { RootLoaderData } from "~/hook/useRootLoaderData";
+import type { Event } from "./card/event-card";
+import type { RootLoaderData } from "~/hook/useRootLoaderData";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
-import { EnrollPayload } from "~/routes/enroll";
+import type { EnrollPayload } from "~/routes/enroll";
 
 export const EnrollButton = ({
   event,

@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { db } from "~/db";
 import { enrolls } from "~/db/schema";
-import { Route } from "~/routes/+types/enroll";
+import type { Route } from "~/routes/+types/enroll";
 import { getSessionFromRequest } from "~/session";
 
 const enrollSchema = z.object({

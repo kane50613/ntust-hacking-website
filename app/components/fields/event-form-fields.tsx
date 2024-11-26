@@ -3,9 +3,11 @@ import { RichInputField } from "../ui/rich-input-field";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { DateTimePicker } from "../ui/date-time-picker";
+import type { CreateEventPayload } from "~/routes/api.events.create";
+import type { EditEventPayload } from "~/routes/api.events.$eventId";
 
 export const EventFormFields = () => {
-  const form = useFormContext();
+  const form = useFormContext<CreateEventPayload | EditEventPayload>();
 
   return (
     <>

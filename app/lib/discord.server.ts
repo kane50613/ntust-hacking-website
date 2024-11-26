@@ -1,4 +1,4 @@
-import { DiscordUser } from "@discordeno/types";
+import type { DiscordUser } from "@discordeno/types";
 import { env } from "~/env";
 
 type OAuthResponse =

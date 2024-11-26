@@ -1,4 +1,4 @@
-import { Route } from "./+types/auth";
+import type { Route } from "./+types/auth";
 import { redirect } from "react-router";
 import { commitSession, getSessionFromRequest } from "~/session";
 import { db } from "~/db";
@@ -8,7 +8,7 @@ import {
   getDiscordUser,
   getOAuthUrl,
 } from "~/lib/discord.server";
-import { DiscordUser } from "@discordeno/types";
+import type { DiscordUser } from "@discordeno/types";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);

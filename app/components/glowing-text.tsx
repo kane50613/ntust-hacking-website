@@ -63,3 +63,5 @@ export const GlowingText = memo(
     );
   }
 );
+
+GlowingText.displayName = "GlowingText";

@@ -1,6 +1,7 @@
-import { m, MotionProps, Variant } from "framer-motion";
+import type { MotionProps, Variant } from "framer-motion";
+import { m } from "framer-motion";
 
-import { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 import { blurInVariants } from "~/lib/motion-variants";
 
 interface BlurIntProps extends PropsWithChildren {

@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { Route } from "./+types/api.events.create";
+import type { z } from "zod";
+import type { Route } from "./+types/api.events.create";
 import { createInsertSchema } from "drizzle-zod";
 import { events } from "~/db/schema";
 import { toast } from "sonner";

@@ -1,5 +1,5 @@
 import { LazyMotion } from "framer-motion";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export const MotionLoader = ({ children }: { children: ReactNode }) => (
   <LazyMotion

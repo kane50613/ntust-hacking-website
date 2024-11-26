@@ -1,7 +1,7 @@
-import { Route } from "./+types/api.events.$eventId";
+import type { Route } from "./+types/api.events.$eventId";
 import { createInsertSchema } from "drizzle-zod";
 import { events } from "~/db/schema";
-import { z } from "zod";
+import type { z } from "zod";
 import { parse } from "devalue";
 import { eq } from "drizzle-orm";
 import { db } from "~/db";

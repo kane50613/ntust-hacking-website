@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "react-router";
-import { Info } from "~/+types/root";
+import type { Info } from "~/+types/root";
 
 export function useRootLoaderData() {
   return (

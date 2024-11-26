@@ -1,5 +1,5 @@
 import { destroySession, getSessionFromRequest } from "~/session";
-import { Route } from "./+types/sign-out";
+import type { Route } from "./+types/sign-out";
 
 export async function action({ request }: Route.LoaderArgs) {
   const session = await getSessionFromRequest(request);

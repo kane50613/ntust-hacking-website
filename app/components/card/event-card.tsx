@@ -1,4 +1,4 @@
-import { Info } from "~/routes/+types/_index";
+import type { Info } from "~/routes/+types/_index";
 import {
   Card,
   CardContent,

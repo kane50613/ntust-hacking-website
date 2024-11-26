@@ -1,6 +1,7 @@
+import type {
+  LinksFunction} from "react-router";
 import {
   Links,
-  LinksFunction,
   Meta,
   Outlet,
   Scripts,
@@ -10,7 +11,7 @@ import "./app.css";
 import { MotionLoader } from "./components/motion-loader";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
-import { Route } from "./+types/root";
+import type { Route } from "./+types/root";
 import { getSessionFromRequest, getUserFromSession } from "./session";
 import { Toaster } from "./components/ui/sonner";
 
