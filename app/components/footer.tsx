@@ -8,7 +8,7 @@ export const Footer = () => (
         既然你都看到這了，應該就接著往這邊點吧
       </p>
       <a
-        href="https://github.com/kane50613/ntust-hacking-website"
+        href="https://github.com/kane50613"
         target="_blank"
         rel="noopener noreferrer"
         className="text-muted-foreground"
