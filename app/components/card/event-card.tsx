@@ -46,10 +46,14 @@ export const EventCard = ({ event }: { event: Event }) => {
       <CardFooter className="flex gap-4">
         <Suspense fallback={<EnrollButton user={undefined} event={event} />}>
           <Await resolve={user}>
-            {(user) => <EnrollButton user={user} event={event} />}
+            {(user) => (
+              <>
+                <EnrollButton user={user} event={event} />
+                {user?.role === "admin" && <AdminTools event={event} />}
+              </>
+            )}
           </Await>
         </Suspense>
-        <AdminTools event={event} />
       </CardFooter>
     </Card>
   );
