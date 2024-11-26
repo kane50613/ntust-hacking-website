@@ -7,12 +7,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
 import { EventFormFields } from "../fields/event-form-fields";
 import type { EditEventPayload } from "~/routes/api.events.$eventId.edit";
 import { editEventSchema } from "~/routes/api.events.$eventId.edit";
+import { Submit } from "../submit";
 
 export const EditEventDialog = ({
   open,
@@ -48,13 +48,9 @@ export const EditEventDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
             <EventFormFields />
-            <Button
-              type="submit"
-              className="rounded-full"
-              disabled={fetcher.state !== "idle"}
-            >
+            <Submit className="rounded-full" loading={fetcher.state !== "idle"}>
               編輯
-            </Button>
+            </Submit>
           </form>
         </Form>
       </DialogContent>

@@ -7,12 +7,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
 import { UserFormFields } from "../fields/user-form-fields";
 import type { EditUserPayload } from "~/routes/api.users.$userId.edit";
 import { editUserSchema } from "~/routes/api.users.$userId.edit";
+import { Submit } from "../submit";
 
 export const EditUserDialog = ({
   open,
@@ -48,13 +48,9 @@ export const EditUserDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
             <UserFormFields />
-            <Button
-              type="submit"
-              className="rounded-full"
-              disabled={fetcher.state !== "idle"}
-            >
+            <Submit className="rounded-full" loading={fetcher.state !== "idle"}>
               編輯
-            </Button>
+            </Submit>
           </form>
         </Form>
       </DialogContent>

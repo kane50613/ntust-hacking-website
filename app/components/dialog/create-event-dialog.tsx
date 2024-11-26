@@ -3,11 +3,16 @@ import { Form } from "../ui/form";
 import type { CreateEventPayload } from "~/routes/api.events.create";
 import { createEventSchema } from "~/routes/api.events.create";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogContent, DialogDescription, Dialog, DialogTitle } from "../ui/dialog";
-import { Button } from "../ui/button";
+import {
+  DialogContent,
+  DialogDescription,
+  Dialog,
+  DialogTitle,
+} from "../ui/dialog";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
 import { EventFormFields } from "../fields/event-form-fields";
+import { Submit } from "../submit";
 
 export const CreateEventDialog = ({
   open,
@@ -42,13 +47,9 @@ export const CreateEventDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
             <EventFormFields />
-            <Button
-              type="submit"
-              className="rounded-full"
-              disabled={fetcher.state !== "idle"}
-            >
+            <Submit className="rounded-full" loading={fetcher.state !== "idle"}>
               建立
-            </Button>
+            </Submit>
           </form>
         </Form>
       </DialogContent>
