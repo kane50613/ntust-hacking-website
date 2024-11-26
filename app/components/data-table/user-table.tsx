@@ -4,6 +4,7 @@ import type { User } from "~/routes/admin.users";
 import { EditUserDialog } from "../dialog/edit-user-dialog";
 import { Button } from "../ui/button";
 import { SquarePen, Trash } from "lucide-react";
+import { DeleteUserDialog } from "../dialog/delete-user-dialog";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -55,6 +56,7 @@ export const columns: ColumnDef<User>[] = [
 
 const Actions = ({ user }: { user: User }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div className="flex gap-2">
@@ -64,10 +66,15 @@ const Actions = ({ user }: { user: User }) => {
         setOpen={setIsEditing}
         userId={user.userId}
       />
+      <DeleteUserDialog open={isDeleting} setOpen={setIsDeleting} user={user} />
       <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)}>
         <SquarePen className="w-4 h-4" />
       </Button>
-      <Button size="sm" variant="destructive">
+      <Button
+        size="sm"
+        variant="destructive"
+        onClick={() => setIsDeleting(true)}
+      >
         <Trash className="w-4 h-4" />
       </Button>
     </div>

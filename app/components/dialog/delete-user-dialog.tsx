@@ -7,20 +7,18 @@ import {
 import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
-import type { Event } from "../card/event-card";
+import type { User } from "~/routes/admin.users";
 
-export const DeleteEventDialog = ({
+export const DeleteUserDialog = ({
   open,
   setOpen,
-  event,
+  user,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  event: Event;
+  user: User;
 }) => {
-  const [submit, fetcher] = useJsonFetcher(
-    `/api/events/${event.eventId}/delete`
-  );
+  const [submit, fetcher] = useJsonFetcher(`/api/users/${user.userId}/delete`);
 
   useEffect(() => {
     if (fetcher.data) {
@@ -31,7 +29,7 @@ export const DeleteEventDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
-        <DialogTitle>刪除 {event.title}</DialogTitle>
+        <DialogTitle>刪除 {user.name}</DialogTitle>
         <DialogDescription>刪除後將無法復原，請謹慎操作</DialogDescription>
         <Button
           className="rounded-full"

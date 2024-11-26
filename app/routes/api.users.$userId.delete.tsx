@@ -11,7 +11,15 @@ export async function action({ request, params }: Route.LoaderArgs) {
   if (!(await getUserFromSession(session, "admin")))
     throw new Error("Not logged in as admin");
 
-  await db.delete(users).where(eq(users.userId, parseInt(params.userId)));
+  const record = await db
+    .delete(users)
+    .where(eq(users.userId, parseInt(params.userId)))
+    .returning()
+    .then((result) => result[0]);
+
+  if (!record) throw new Error("Failed to delete user");
+
+  return record;
 }
 
 export function clientAction({ serverAction }: Route.ClientActionArgs) {
