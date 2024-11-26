@@ -1,32 +1,24 @@
-import type { Route } from "./+types/api.events.$eventId";
-import { createInsertSchema } from "drizzle-zod";
-import { events } from "~/db/schema";
-import type { z } from "zod";
-import { parse } from "devalue";
+import type { Route } from "./+types/api.events.$eventId.delete";
+import { enrolls, events, feedbacks } from "~/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "~/db";
-import { toast } from "sonner";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
-
-export const editEventSchema = createInsertSchema(events).omit({
-  createdAt: true,
-  eventId: true,
-});
-
-export type EditEventPayload = z.infer<typeof editEventSchema>;
+import { clientActionToast } from "~/lib/client-action-toast";
 
 export async function action({ request, params }: Route.LoaderArgs) {
   const eventId = parseInt(params.eventId);
-  const payload = editEventSchema.parse(parse(await request.text()));
 
   const session = await getSessionFromRequest(request);
 
   if (!(await getUserFromSession(session, "admin")))
     throw new Error("Not logged in as admin");
 
+  await db.delete(enrolls).where(eq(enrolls.eventId, eventId));
+
+  await db.delete(feedbacks).where(eq(feedbacks.eventId, eventId));
+
   const record = await db
-    .update(events)
-    .set(payload)
+    .delete(events)
     .where(eq(events.eventId, eventId))
     .returning()
     .then((result) => result[0]);
@@ -37,11 +29,11 @@ export async function action({ request, params }: Route.LoaderArgs) {
 }
 
 export function clientAction({ serverAction }: Route.ClientActionArgs) {
-  toast.promise(serverAction(), {
-    loading: "正在編輯活動...",
-    success: "編輯成功",
+  return clientActionToast(serverAction(), {
+    loading: "正在刪除...",
+    success: "刪除成功",
     error(error: unknown) {
-      return `編輯失敗: ${
+      return `刪除失敗: ${
         error instanceof Error ? error.message : String(error)
       }`;
     },

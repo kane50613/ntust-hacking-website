@@ -1,21 +1,23 @@
-import type { z } from "zod";
-import type { Route } from "./+types/api.events.create";
+import type { Route } from "./+types/api.events.$eventId.edit";
 import { createInsertSchema } from "drizzle-zod";
 import { events } from "~/db/schema";
-import { db } from "~/db";
+import type { z } from "zod";
 import { parse } from "devalue";
+import { eq } from "drizzle-orm";
+import { db } from "~/db";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { clientActionToast } from "~/lib/client-action-toast";
 
-export const createEventSchema = createInsertSchema(events).omit({
-  eventId: true,
+export const editEventSchema = createInsertSchema(events).omit({
   createdAt: true,
+  eventId: true,
 });
 
-export type CreateEventPayload = z.infer<typeof createEventSchema>;
+export type EditEventPayload = z.infer<typeof editEventSchema>;
 
-export async function action({ request }: Route.LoaderArgs) {
-  const payload = createEventSchema.parse(parse(await request.text()));
+export async function action({ request, params }: Route.LoaderArgs) {
+  const eventId = parseInt(params.eventId);
+  const payload = editEventSchema.parse(parse(await request.text()));
 
   const session = await getSessionFromRequest(request);
 
@@ -23,22 +25,23 @@ export async function action({ request }: Route.LoaderArgs) {
     throw new Error("Not logged in as admin");
 
   const record = await db
-    .insert(events)
-    .values(payload)
+    .update(events)
+    .set(payload)
+    .where(eq(events.eventId, eventId))
     .returning()
     .then((result) => result[0]);
 
-  if (!record) throw new Error("Failed to create event");
+  if (!record) throw new Error("Failed to edit event");
 
   return record;
 }
 
 export function clientAction({ serverAction }: Route.ClientActionArgs) {
   return clientActionToast(serverAction(), {
-    loading: "正在建立活動...",
-    success: "建立成功",
+    loading: "正在編輯活動...",
+    success: "編輯成功",
     error(error: unknown) {
-      return `建立失敗: ${
+      return `編輯失敗: ${
         error instanceof Error ? error.message : String(error)
       }`;
     },

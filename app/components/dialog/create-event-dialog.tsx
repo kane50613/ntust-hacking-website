@@ -3,7 +3,7 @@ import { Form } from "../ui/form";
 import type { CreateEventPayload } from "~/routes/api.events.create";
 import { createEventSchema } from "~/routes/api.events.create";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogContent, Dialog, DialogTitle } from "../ui/dialog";
+import { DialogContent, DialogDescription, Dialog, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
@@ -36,6 +36,9 @@ export const CreateEventDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogTitle>建立新活動</DialogTitle>
+        <DialogDescription>
+          建立活動後將會公開並且照開始日期排序
+        </DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
             <EventFormFields />

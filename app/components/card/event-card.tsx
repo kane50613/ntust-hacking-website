@@ -13,6 +13,7 @@ import { EnrollButton } from "../enroll-button";
 import { useRootLoaderData } from "~/hook/useRootLoaderData";
 import { Await } from "react-router";
 import { EditEventDialog } from "../dialog/edit-event-dialog";
+import { DeleteEventDialog } from "../dialog/delete-event-dialog";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -61,6 +62,7 @@ export const EventCard = ({ event }: { event: Event }) => {
 
 const AdminTools = ({ event }: { event: Event }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <>
@@ -70,8 +72,16 @@ const AdminTools = ({ event }: { event: Event }) => {
         setOpen={setIsEditing}
         eventId={event.eventId}
       />
+      <DeleteEventDialog
+        open={isDeleting}
+        setOpen={setIsDeleting}
+        event={event}
+      />
       <Button variant="outline" onClick={() => setIsEditing(true)}>
         編輯活動
+      </Button>
+      <Button variant="destructive" onClick={() => setIsDeleting(true)}>
+        刪除活動
       </Button>
     </>
   );
