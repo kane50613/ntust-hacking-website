@@ -44,7 +44,7 @@ export const EventCard = ({ event }: { event: Event }) => {
       <CardContent className="flex-grow">
         <p className="text-sm text-primary/90">{event.description}</p>
       </CardContent>
-      <CardFooter className="flex gap-4">
+      <CardFooter className="flex gap-4 flex-wrap">
         <Suspense fallback={<EnrollButton user={undefined} event={event} />}>
           <Await resolve={user}>
             {(user) => (

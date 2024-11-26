@@ -49,7 +49,7 @@ export const Events = ({
         </Suspense>
         {!showFull && (
           <button
-            className="w-full bg-gradient-to-b from-background/50 to-background absolute bottom-0 left-0 h-24 flex justify-center z-50 items-center"
+            className="w-full bg-gradient-to-b from-background/50 to-background absolute bottom-0 left-0 h-24 flex justify-center z-10 items-center"
             onClick={() => setShowFull(true)}
           >
             顯示更多資訊 <ChevronDown className="w-4 ml-2" />

@@ -29,7 +29,7 @@ export const Header = () => {
           <img
             src="https://creatorspace.imgix.net/users/clm61gg6k03bdo9010lkwn8z8/G1CNUrljJkYCXIWY-channels4_profile.jpeg"
             className="rounded-full w-10 aspect-square shadow-lg"
-            alt="台科大資訊安全研究社"
+            alt="logo"
           />
           <p className="ml-2 hidden sm:block">台科大資訊安全研究社</p>
         </Link>
@@ -61,7 +61,7 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
           <img
             src={user.avatar}
             className="rounded-full w-6 aspect-square shadow-lg"
-            alt={user.name}
+            alt="user avatar"
           />
           <p className="text-sm">{user.name}</p>
           <ChevronDown className="h-4 w-4" />
