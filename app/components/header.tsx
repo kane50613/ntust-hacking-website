@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
@@ -68,6 +69,7 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {user?.role === "admin" && <AdminDropdownOptions />}
         <DropdownMenuItem
           onClick={() => signOut(null)}
           disabled={signOutFetcher.state !== "idle"}
@@ -78,6 +80,15 @@ const User = ({ user }: { user: Awaited<Info["loaderData"]["user"]> }) => {
     </DropdownMenu>
   );
 };
+
+const AdminDropdownOptions = () => (
+  <>
+    <DropdownMenuItem asChild>
+      <Link to="/admin/users">管理社員</Link>
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+  </>
+);
 
 const UserSkeleton = () => (
   <Button variant="outline" className="rounded-full h-10 px-2">

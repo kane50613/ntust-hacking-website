@@ -14,6 +14,7 @@ import { useRootLoaderData } from "~/hook/useRootLoaderData";
 import { Await } from "react-router";
 import { EditEventDialog } from "../dialog/edit-event-dialog";
 import { DeleteEventDialog } from "../dialog/delete-event-dialog";
+import { SquarePen, Trash } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -78,10 +79,10 @@ const AdminTools = ({ event }: { event: Event }) => {
         event={event}
       />
       <Button variant="outline" onClick={() => setIsEditing(true)}>
-        編輯活動
+        <SquarePen className="w-4 h-4" />
       </Button>
       <Button variant="destructive" onClick={() => setIsDeleting(true)}>
-        刪除活動
+        <Trash className="w-4 h-4" />
       </Button>
     </>
   );

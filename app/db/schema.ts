@@ -19,7 +19,7 @@ export const events = pgTable("events", {
   createdAt,
 });
 
-export const role = pgEnum("role", ["admin", "user"]);
+export const role = pgEnum("role", ["admin", "user", "guest"]);
 
 export type Role = (typeof role.enumValues)[number];
 
@@ -39,10 +39,14 @@ export const enrolls = pgTable(
     enrollId: integer().primaryKey().generatedByDefaultAsIdentity(),
     userId: integer()
       .notNull()
-      .references(() => users.userId),
+      .references(() => users.userId, {
+        onDelete: "cascade",
+      }),
     eventId: integer()
       .notNull()
-      .references(() => events.eventId),
+      .references(() => events.eventId, {
+        onDelete: "cascade",
+      }),
     createdAt,
   },
   (table) => [uniqueIndex().on(table.userId, table.eventId)]
@@ -52,10 +56,14 @@ export const feedbacks = pgTable("feedbacks", {
   feedbackId: integer().primaryKey().generatedByDefaultAsIdentity(),
   eventId: integer()
     .notNull()
-    .references(() => events.eventId),
+    .references(() => events.eventId, {
+      onDelete: "cascade",
+    }),
   userId: integer()
     .notNull()
-    .references(() => users.userId),
+    .references(() => users.userId, {
+      onDelete: "cascade",
+    }),
   comment: varchar(),
   createdAt,
   rating: integer().notNull(),
