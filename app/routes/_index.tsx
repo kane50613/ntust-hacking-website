@@ -9,12 +9,16 @@ import { getSessionFromRequest } from "~/session";
 import { Contacts } from "~/components/sections/contacts";
 import { alias } from "drizzle-orm/pg-core";
 
+function ratingField() {
+  return sql<string>`trunc(${avg(feedbacks.rating)}, 1)`;
+}
+
 function getEventRecords() {
   return db
     .select({
       ...getTableColumns(events),
       enrollsCount: count(enrolls.userId),
-      rating: avg(feedbacks.rating),
+      rating: ratingField(),
       enrollId: sql<null>`null`,
       feedback: sql<null>`null`,
     })
@@ -34,7 +38,7 @@ function getEventRecordsWithUser(userId: number) {
     .select({
       ...getTableColumns(events),
       enrollsCount: count(enrolls.userId),
-      rating: sql<string>`trunc(${avg(feedbacks.rating)}, 1)`,
+      rating: ratingField(),
       enrollId: personalEnrollsTable.enrollId,
       feedback: personalFeedbacksTable,
     })
