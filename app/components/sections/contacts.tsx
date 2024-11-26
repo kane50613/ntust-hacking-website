@@ -34,7 +34,7 @@ export const Contacts = () => {
   return (
     <div className="py-32 flex flex-col items-center justify-center gap-10 w-full container">
       <SectionTitle>在這裡找我們</SectionTitle>
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-4">
         {socials.map((social) => (
           <SocialLink key={social.href} social={social} />
         ))}
@@ -48,7 +48,7 @@ const SocialLink = ({ social }: { social: Social }) => (
     href={social.href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex items-center text-xl text-primary/90 gap-4 hover:bg-accent transition-colors rounded-lg p-6"
+    className="flex items-center text-xl text-primary/90 gap-4 hover:bg-accent transition-colors rounded-lg px-6 py-4"
   >
     {social.icon}
     <div>
