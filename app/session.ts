@@ -35,7 +35,7 @@ export async function getUserFromSession(
     where: eq(users.userId, session.data.userId),
   });
 
-  if (!record || record.role !== role) return;
+  if (!record || (role && record.role !== role)) return;
 
   return record;
 }
