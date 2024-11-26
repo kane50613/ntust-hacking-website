@@ -11,10 +11,7 @@ import { MotionLoader } from "./components/motion-loader";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { Route } from "./+types/root";
-import { getSessionFromRequest } from "./session";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
-import { users } from "./db/schema";
+import { getSessionFromRequest, getUserFromSession } from "./session";
 import { Toaster } from "./components/ui/sonner";
 
 export const links: LinksFunction = () => [
@@ -56,17 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSessionFromRequest(request);
 
-  if (session.data.userId) {
-    return {
-      user: db.query.users
-        .findFirst({
-          where: eq(users.userId, session.data.userId),
-        })
-        .execute(),
-    };
-  }
-
-  return {};
+  return {
+    user: getUserFromSession(session),
+  };
 }
 
 export default function App() {

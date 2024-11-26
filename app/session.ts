@@ -1,5 +1,8 @@
-import { createCookieSessionStorage } from "react-router";
+import { createCookieSessionStorage, Session } from "react-router";
 import { env } from "./env";
+import { Role, users } from "./db/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface SessionData {
   userId?: number;
@@ -20,4 +23,19 @@ export const { getSession, commitSession, destroySession } =
 
 export function getSessionFromRequest(request: Request) {
   return getSession(request.headers.get("cookie"));
+}
+
+export async function getUserFromSession(
+  session: Session<SessionData>,
+  role?: Role
+) {
+  if (!session.data.userId) return;
+
+  const record = await db.query.users.findFirst({
+    where: eq(users.userId, session.data.userId),
+  });
+
+  if (!record || record.role !== role) return;
+
+  return record;
 }

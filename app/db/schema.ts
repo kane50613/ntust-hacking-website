@@ -2,25 +2,31 @@ import { relations } from "drizzle-orm";
 import {
   bigint,
   integer,
+  pgEnum,
   pgTable,
   timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
 
-const createdAt = timestamp({ mode: "date" }).notNull().defaultNow();
+const createdAt = timestamp().notNull().defaultNow();
 
 export const events = pgTable("events", {
   eventId: integer().primaryKey().generatedByDefaultAsIdentity(),
   title: varchar(),
   description: varchar(),
-  date: timestamp({ mode: "date" }),
+  date: timestamp(),
   createdAt,
 });
+
+export const role = pgEnum("role", ["admin", "user"]);
+
+export type Role = (typeof role.enumValues)[number];
 
 export const users = pgTable("users", {
   userId: integer().primaryKey().generatedByDefaultAsIdentity(),
   discordId: bigint({ mode: "bigint" }).notNull().unique(),
+  role: role().notNull().default("user"),
   name: varchar().notNull(),
   email: varchar().unique(),
   avatar: varchar().notNull(),

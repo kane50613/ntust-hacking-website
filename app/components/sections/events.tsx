@@ -1,11 +1,13 @@
 import { Suspense, useState } from "react";
-import { EventCard, EventCardSkeleton } from "../event-card";
+import { EventCard, EventCardSkeleton } from "../card/event-card";
 import { SectionTitle } from "../section-title";
 import { Info } from "~/routes/+types/_index";
 import { Await } from "react-router";
 import { AsyncError } from "../async-error";
 import { cn } from "~/lib/utils";
 import { ChevronDown } from "lucide-react";
+import { useRootLoaderData } from "~/hook/useRootLoaderData";
+import { CreateEventCard } from "../card/create-event-card";
 
 export const Events = ({
   eventRecords,
@@ -13,6 +15,7 @@ export const Events = ({
   eventRecords: Info["loaderData"]["eventRecords"];
 }) => {
   const [showFull, setShowFull] = useState(false);
+  const { user } = useRootLoaderData();
 
   return (
     <div
@@ -26,6 +29,11 @@ export const Events = ({
           !showFull && "h-96 overflow-y-hidden"
         )}
       >
+        <Suspense>
+          <Await resolve={user}>
+            {(user) => (user?.role === "admin" ? <CreateEventCard /> : null)}
+          </Await>
+        </Suspense>
         <Suspense
           fallback={Array.from({ length: 5 }, (_, i) => (
             <EventCardSkeleton key={i} />

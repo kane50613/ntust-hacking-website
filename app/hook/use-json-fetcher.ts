@@ -1,20 +1,13 @@
 import { useCallback } from "react";
 import { useFetcher } from "react-router";
+import { stringify } from "devalue";
 
-type JsonValues =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValues[]
-  | { [key: string]: JsonValues };
-
-export function useJsonFetcher<T extends JsonValues>(action: string) {
+export function useJsonFetcher<T>(action: string) {
   const fetcher = useFetcher();
 
   const submit = useCallback(
     (value: T) => {
-      fetcher.submit(value, {
+      fetcher.submit(stringify(value), {
         method: "POST",
         encType: "application/json",
         action,

@@ -5,13 +5,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
-import { Suspense, useMemo } from "react";
-import { EnrollButton } from "./enroll-button";
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
+import { Suspense, useMemo, useState } from "react";
+import { EnrollButton } from "../enroll-button";
 import { useRootLoaderData } from "~/hook/useRootLoaderData";
 import { Await } from "react-router";
+import { EditEventDialog } from "../dialog/edit-event-dialog";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
@@ -34,7 +35,7 @@ export const EventCard = ({ event }: { event: Event }) => {
   }, [event]);
 
   return (
-    <Card className="text-start flex flex-col">
+    <Card className="text-start flex flex-col bg-secondary">
       <CardHeader>
         <p className="text-sm text-muted-foreground">{parts}</p>
         <CardTitle className="text-2xl">{event.title}</CardTitle>
@@ -42,14 +43,33 @@ export const EventCard = ({ event }: { event: Event }) => {
       <CardContent className="flex-grow">
         <p className="text-sm text-primary/90">{event.description}</p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex gap-4">
         <Suspense fallback={<EnrollButton user={undefined} event={event} />}>
           <Await resolve={user}>
             {(user) => <EnrollButton user={user} event={event} />}
           </Await>
         </Suspense>
+        <AdminTools event={event} />
       </CardFooter>
     </Card>
+  );
+};
+
+const AdminTools = ({ event }: { event: Event }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  return (
+    <>
+      <EditEventDialog
+        defaultValues={event}
+        open={isEditing}
+        setOpen={setIsEditing}
+        eventId={event.eventId}
+      />
+      <Button variant="outline" onClick={() => setIsEditing(true)}>
+        編輯活動
+      </Button>
+    </>
   );
 };
 

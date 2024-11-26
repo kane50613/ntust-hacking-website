@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SignInDialog } from "./dialog/sign-in-dialog";
 import { Button } from "./ui/button";
-import { Event } from "./event-card";
+import { Event } from "./card/event-card";
 import { RootLoaderData } from "~/hook/useRootLoaderData";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { EnrollPayload } from "~/routes/enroll";
