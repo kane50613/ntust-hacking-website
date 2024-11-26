@@ -48,12 +48,14 @@ export const Events = ({
           </Await>
         </Suspense>
         {!showFull && (
-          <button
-            className="w-full bg-gradient-to-b from-transparent to-background to-60% absolute bottom-0 left-0 h-24 flex justify-center z-10 items-center"
-            onClick={() => setShowFull(true)}
-          >
-            顯示更多資訊 <ChevronDown className="w-4 ml-2" />
-          </button>
+          <div className="w-full bg-gradient-to-b from-transparent to-background to-60% absolute bottom-0 left-0 h-32 z-10 grid place-items-center">
+            <button
+              className="flex justify-center items-center gap-2 p-2"
+              onClick={() => setShowFull(true)}
+            >
+              顯示更多資訊 <ChevronDown className="w-4" />
+            </button>
+          </div>
         )}
       </div>
     </div>
