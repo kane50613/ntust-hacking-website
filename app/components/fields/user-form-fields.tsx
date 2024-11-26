@@ -1,7 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { RichInputField } from "../ui/rich-input-field";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import type { EditUserPayload } from "~/routes/api.users.$userId.edit";
 import {
   Select,
@@ -21,7 +20,7 @@ export const UserFormFields = () => {
         {(field) => <Input {...field} value={field.value ?? ""} />}
       </RichInputField>
       <RichInputField name="email" control={form.control} label="電子郵件">
-        {(field) => <Textarea {...field} value={field.value ?? ""} />}
+        {(field) => <Input {...field} value={field.value ?? ""} />}
       </RichInputField>
       <RichInputField name="role" control={form.control} label="權限">
         {(field) => (

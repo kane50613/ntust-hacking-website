@@ -1,14 +1,17 @@
 import { clientActionToast } from "~/lib/client-action-toast";
 import type { Route } from "./+types/api.users.$userId.edit";
 import { db } from "~/db";
-import { users } from "~/db/schema";
+import { role, users } from "~/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { parse } from "devalue";
 import { eq } from "drizzle-orm";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
-import type { z } from "zod";
+import { z } from "zod";
 
-export const editUserSchema = createInsertSchema(users).omit({
+export const editUserSchema = createInsertSchema(users, {
+  email: z.string().email(),
+  role: z.enum(role.enumValues),
+}).omit({
   createdAt: true,
   userId: true,
   discordId: true,
