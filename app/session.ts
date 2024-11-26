@@ -1,7 +1,7 @@
 import type { Session } from "react-router";
 import { createCookieSessionStorage } from "react-router";
 import { env } from "./env";
-import type { Role} from "./db/schema";
+import type { Role } from "./db/schema";
 import { users } from "./db/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";

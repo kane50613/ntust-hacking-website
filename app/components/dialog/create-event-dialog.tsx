@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Form } from "../ui/form";
-import type {
-  CreateEventPayload} from "~/routes/api.events.create";
-import {
-  createEventSchema,
-} from "~/routes/api.events.create";
+import type { CreateEventPayload } from "~/routes/api.events.create";
+import { createEventSchema } from "~/routes/api.events.create";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogContent, Dialog, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";

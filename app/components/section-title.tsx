@@ -3,7 +3,10 @@ import { cn } from "~/lib/utils";
 
 export const SectionTitle = (props: ComponentProps<"h2">) => {
   return (
-    <h2 {...props} className={cn("text-4xl sm:text-5xl font-bold", props.className)}>
+    <h2
+      {...props}
+      className={cn("text-4xl sm:text-5xl font-bold", props.className)}
+    >
       {props.children}
     </h2>
   );

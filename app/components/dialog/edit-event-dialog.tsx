@@ -6,11 +6,8 @@ import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
 import { EventFormFields } from "../fields/event-form-fields";
-import type {
-  EditEventPayload} from "~/routes/api.events.$eventId";
-import {
-  editEventSchema,
-} from "~/routes/api.events.$eventId";
+import type { EditEventPayload } from "~/routes/api.events.$eventId";
+import { editEventSchema } from "~/routes/api.events.$eventId";
 
 export const EditEventDialog = ({
   open,

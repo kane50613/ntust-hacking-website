@@ -44,14 +44,14 @@ export const GlowingText = memo(
             glowIntensity > 0.1
               ? `
               0 0 ${glowIntensity * 15}px rgba(239, 246, 255, ${
-                glowIntensity * 0.5
-              }),
+                  glowIntensity * 0.5
+                }),
               0 0 ${glowIntensity * 30}px rgba(239, 246, 255, ${
-                glowIntensity * 0.3
-              }),
+                  glowIntensity * 0.3
+                }),
               0 0 ${glowIntensity * 45}px rgba(239, 246, 255, ${
-                glowIntensity * 0.1
-              })
+                  glowIntensity * 0.1
+                })
             `
               : "none",
           mixBlendMode: "plus-lighter",

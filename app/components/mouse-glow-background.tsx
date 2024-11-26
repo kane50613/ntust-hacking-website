@@ -1,20 +1,10 @@
-import type {
-  CSSProperties,
-  MouseEventHandler} from "react";
-import {
-  useState,
-  useCallback,
-  useEffect,
-  useDeferredValue,
-} from "react";
+import type { CSSProperties, MouseEventHandler } from "react";
+import { useState, useCallback, useEffect, useDeferredValue } from "react";
 import { GlowingText } from "./glowing-text";
 import { isbot } from "isbot";
 import { AnimatePresence } from "framer-motion";
-import type {
-  Word} from "~/lib/word-clouds";
-import {
-  generateVerticalAndHorizontalWordClouds
-} from "~/lib/word-clouds";
+import type { Word } from "~/lib/word-clouds";
+import { generateVerticalAndHorizontalWordClouds } from "~/lib/word-clouds";
 
 function useIsFocused() {
   const [isFocused, setIsFocused] = useState(true);
