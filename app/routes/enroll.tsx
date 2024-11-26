@@ -12,7 +12,7 @@ const enrollSchema = z.object({
 
 export type EnrollPayload = z.infer<typeof enrollSchema>;
 
-export async function action({ request }: Route.LoaderArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const { eventId } = enrollSchema.parse(parse(await request.text()));
 
   const session = await getSessionFromRequest(request);

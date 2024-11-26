@@ -17,7 +17,7 @@ import { DeleteEventDialog } from "../dialog/delete-event-dialog";
 import { SquarePen, Trash } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
-  dateStyle: "full",
+  dateStyle: "short",
   timeStyle: "short",
 });
 
@@ -28,6 +28,10 @@ export const EventCard = ({ event }: { event: Event }) => {
 
   const parts = useMemo(() => {
     const parts = [`${event.enrollsCount} 人`];
+
+    if (event.rating) {
+      parts.push(`評分 ${event.rating}`);
+    }
 
     if (event.date) {
       parts.push(dateFormatter.format(event.date));

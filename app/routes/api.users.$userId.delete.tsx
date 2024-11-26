@@ -5,7 +5,7 @@ import { users } from "~/db/schema";
 import { eq } from "drizzle-orm";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 
-export async function action({ request, params }: Route.LoaderArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
   const session = await getSessionFromRequest(request);
 
   if (!(await getUserFromSession(session, "admin")))

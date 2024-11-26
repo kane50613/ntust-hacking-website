@@ -1,12 +1,65 @@
 import { db } from "~/db";
-import { enrolls, events } from "~/db/schema";
+import { enrolls, events, feedbacks } from "~/db/schema";
 import type { Route } from "~/routes/+types/_index";
 import { Hero } from "~/components/hero";
 import { Events } from "~/components/sections/events";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, avg, count, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { lazy } from "react";
 import { getSessionFromRequest } from "~/session";
 import { Contacts } from "~/components/sections/contacts";
+import { alias } from "drizzle-orm/pg-core";
+
+function getEventRecords() {
+  return db
+    .select({
+      ...getTableColumns(events),
+      enrollsCount: count(enrolls.userId),
+      rating: avg(feedbacks.rating),
+      enrollId: sql<null>`null`,
+      feedback: sql<null>`null`,
+    })
+    .from(events)
+    .leftJoin(enrolls, eq(events.eventId, enrolls.eventId))
+    .leftJoin(feedbacks, eq(enrolls.enrollId, feedbacks.enrollId))
+    .orderBy(desc(events.date))
+    .groupBy(events.eventId)
+    .execute();
+}
+
+const personalEnrollsTable = alias(enrolls, "personal_enrolls");
+const personalFeedbacksTable = alias(feedbacks, "personal_feedbacks");
+
+function getEventRecordsWithUser(userId: number) {
+  return db
+    .select({
+      ...getTableColumns(events),
+      enrollsCount: count(enrolls.userId),
+      rating: sql<string>`trunc(${avg(feedbacks.rating)}, 1)`,
+      enrollId: personalEnrollsTable.enrollId,
+      feedback: personalFeedbacksTable,
+    })
+    .from(events)
+    .leftJoin(enrolls, eq(events.eventId, enrolls.eventId))
+    .leftJoin(feedbacks, eq(enrolls.enrollId, feedbacks.enrollId))
+    .leftJoin(
+      personalEnrollsTable,
+      and(
+        eq(events.eventId, personalEnrollsTable.eventId),
+        eq(personalEnrollsTable.userId, userId)
+      )
+    )
+    .leftJoin(
+      personalFeedbacksTable,
+      eq(personalEnrollsTable.enrollId, personalFeedbacksTable.enrollId)
+    )
+    .orderBy(desc(events.date))
+    .groupBy(
+      events.eventId,
+      personalEnrollsTable.enrollId,
+      personalFeedbacksTable.feedbackId
+    )
+    .execute();
+}
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -18,29 +71,9 @@ export async function loader({ request }: Route.LoaderArgs) {
     url.searchParams.has("red");
 
   return {
-    eventRecords: db.query.events
-      .findMany({
-        with: {
-          feedbacks: {
-            columns: {
-              rating: true,
-              comment: true,
-            },
-          },
-          enrolls: session.data.userId
-            ? {
-                where: eq(enrolls.userId, session.data.userId),
-              }
-            : undefined,
-        },
-        extras: {
-          enrollsCount: db
-            .$count(enrolls, sql`"enrolls"."eventId" = ${events.eventId}`)
-            .as("enrollCount"),
-        },
-        orderBy: desc(events.date),
-      })
-      .execute(),
+    eventRecords: session.data.userId
+      ? getEventRecordsWithUser(session.data.userId)
+      : getEventRecords(),
     isRed,
   };
 }

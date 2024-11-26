@@ -54,14 +54,10 @@ export const enrolls = pgTable(
 
 export const feedbacks = pgTable("feedbacks", {
   feedbackId: integer().primaryKey().generatedByDefaultAsIdentity(),
-  eventId: integer()
+  enrollId: integer()
     .notNull()
-    .references(() => events.eventId, {
-      onDelete: "cascade",
-    }),
-  userId: integer()
-    .notNull()
-    .references(() => users.userId, {
+    .unique()
+    .references(() => enrolls.enrollId, {
       onDelete: "cascade",
     }),
   comment: varchar(),
@@ -71,7 +67,6 @@ export const feedbacks = pgTable("feedbacks", {
 
 export const eventRelations = relations(events, ({ many }) => ({
   enrolls: many(enrolls),
-  feedbacks: many(feedbacks),
 }));
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -87,15 +82,12 @@ export const enrollRelations = relations(enrolls, ({ one }) => ({
     fields: [enrolls.userId],
     references: [users.userId],
   }),
+  feedback: one(feedbacks),
 }));
 
 export const feedbackRelations = relations(feedbacks, ({ one }) => ({
-  event: one(events, {
-    fields: [feedbacks.eventId],
-    references: [events.eventId],
-  }),
-  user: one(users, {
-    fields: [feedbacks.userId],
-    references: [users.userId],
+  enroll: one(enrolls, {
+    fields: [feedbacks.enrollId],
+    references: [enrolls.enrollId],
   }),
 }));

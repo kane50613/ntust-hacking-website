@@ -15,7 +15,7 @@ export const editEventSchema = createInsertSchema(events).omit({
 
 export type EditEventPayload = z.infer<typeof editEventSchema>;
 
-export async function action({ request, params }: Route.LoaderArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
   const eventId = parseInt(params.eventId);
   const payload = editEventSchema.parse(parse(await request.text()));
 

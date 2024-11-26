@@ -20,7 +20,7 @@ export const editUserSchema = createInsertSchema(users, {
 
 export type EditUserPayload = z.infer<typeof editUserSchema>;
 
-export async function action({ request, params }: Route.LoaderArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
   const session = await getSessionFromRequest(request);
 
   if (!(await getUserFromSession(session, "admin")))

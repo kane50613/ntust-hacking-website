@@ -5,7 +5,7 @@ import { db } from "~/db";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { clientActionToast } from "~/lib/client-action-toast";
 
-export async function action({ request, params }: Route.LoaderArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
   const eventId = parseInt(params.eventId);
 
   const session = await getSessionFromRequest(request);

@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "prettier": "prettier --write .",
     "typecheck": "react-router typegen",
-    "db:push": "drizzle-kit push && bun app/db/seed.ts"
+    "db:push": "drizzle-kit push && bun app/db/seed.ts",
+    "db:server": "tsx scripts/pg-gateway.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.13",
@@ -74,6 +75,8 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
     "pg": "^8.13.1",
+    "pg-gateway": "^0.3.0-beta.3",
+    "tsx": "^4.19.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.15.0",
     "vite": "^5.4.11",

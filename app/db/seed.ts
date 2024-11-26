@@ -37,17 +37,19 @@ export async function seedDb() {
     .returning();
 
   for (const eventRecord of eventRecords) {
-    await db.insert(enrolls).values(
-      userRecords.map((userRecord) => ({
-        eventId: eventRecord.eventId,
-        userId: userRecord.userId,
-      }))
-    );
+    const enrollRecords = await db
+      .insert(enrolls)
+      .values(
+        userRecords.map((userRecord) => ({
+          eventId: eventRecord.eventId,
+          userId: userRecord.userId,
+        }))
+      )
+      .returning();
 
     await db.insert(feedbacks).values(
-      userRecords.map((userRecord) => ({
-        eventId: eventRecord.eventId,
-        userId: userRecord.userId,
+      enrollRecords.map((enroll) => ({
+        enrollId: enroll.enrollId,
         comment: faker.lorem.sentences(3),
         rating: Math.floor(Math.random() * 5),
       }))
