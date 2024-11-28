@@ -5,10 +5,12 @@ import { createInsertSchema } from "drizzle-zod";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { parse } from "devalue";
 import { and, eq } from "drizzle-orm";
-import type { z } from "zod";
+import { z } from "zod";
 import { clientActionToast } from "~/lib/client-action-toast";
 
-export const createFeedbackSchema = createInsertSchema(feedbacks).omit({
+export const createFeedbackSchema = createInsertSchema(feedbacks, {
+  rating: z.number().int().min(1).max(5),
+}).omit({
   feedbackId: true,
   enrollId: true,
   createdAt: true,
