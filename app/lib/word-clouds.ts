@@ -126,7 +126,7 @@ export function generateVerticalAndHorizontalWordClouds() {
   };
 
   const words: Word[] = [];
-  const spatialGrid = new SpatialGrid(100); // Cell size of 100px
+  const spatialGrid = new SpatialGrid(innerWidth / 2); // Cell size of 100px
 
   let radius = innerWidth / 10;
   let consecutiveFailures = 0;
