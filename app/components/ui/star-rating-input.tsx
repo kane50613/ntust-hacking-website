@@ -36,7 +36,7 @@ export function StarRatingInput({
   );
 }
 
-function Star({
+export function Star({
   active,
   value,
   onClick,
@@ -45,9 +45,9 @@ function Star({
 }: {
   active: boolean;
   value: number;
-  onClick: (value: number) => void;
-  onMouseEnter: (value: number) => void;
-  onMouseLeave: () => void;
+  onClick?: (value: number) => void;
+  onMouseEnter?: (value: number) => void;
+  onMouseLeave?: () => void;
 }) {
   return (
     <StarIcon
@@ -56,8 +56,8 @@ function Star({
         active ? "fill-yellow-400" : "fill-muted-foreground"
       )}
       strokeWidth={0}
-      onMouseEnter={() => onMouseEnter(value)}
-      onClick={() => onClick(value)}
+      onMouseEnter={onMouseEnter?.bind(null, value)}
+      onClick={onClick?.bind(null, value)}
       onMouseLeave={onMouseLeave}
     />
   );

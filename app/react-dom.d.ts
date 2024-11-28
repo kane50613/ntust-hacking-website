@@ -3,3 +3,5 @@ declare module "react-dom/server.edge" {
 
   export { renderToReadableStream };
 }
+
+import "@total-typescript/ts-reset";

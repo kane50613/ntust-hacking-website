@@ -7,7 +7,7 @@ import {
 import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
-import type { Event } from "../card/event-card";
+import type { events } from "~/db/schema";
 
 export const DeleteEventDialog = ({
   open,
@@ -16,7 +16,7 @@ export const DeleteEventDialog = ({
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  event: Event;
+  event: typeof events.$inferSelect;
 }) => {
   const [submit, fetcher] = useJsonFetcher(
     `/api/events/${event.eventId}/delete`
