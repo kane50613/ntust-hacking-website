@@ -9,15 +9,21 @@ import {
 } from "../ui/tooltip";
 import { MessageCircleIcon } from "lucide-react";
 
-  const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
-    dateStyle: "full",
-    timeStyle : "short",
-  });
+const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
+  dateStyle: "full",
+  timeStyle: "short",
+});
 
 export const columns: ColumnDef<AdminEvent["enrolls"][number]>[] = [
   {
     accessorKey: "user.name",
     header: "社員",
+  },
+  {
+    accessorFn({ group }) {
+      return group?.name ?? "-";
+    },
+    header: "組別",
   },
   {
     id: "feedback",
@@ -43,7 +49,7 @@ export const columns: ColumnDef<AdminEvent["enrolls"][number]>[] = [
   {
     accessorFn: ({ createdAt }) => dateFormatter.format(createdAt),
     header: "日期",
-  }
+  },
 ];
 
 const Rating = ({ rating }: { rating?: number }) => {

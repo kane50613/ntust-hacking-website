@@ -48,9 +48,21 @@ export const enrolls = pgTable(
         onDelete: "cascade",
       }),
     createdAt,
+    groupId: integer(),
   },
   (table) => [uniqueIndex().on(table.userId, table.eventId)]
 );
+
+export const groups = pgTable("groups", {
+  groupId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  eventId: integer()
+    .notNull()
+    .references(() => events.eventId, {
+      onDelete: "cascade",
+    }),
+  name: varchar().notNull(),
+  createdAt,
+});
 
 export const feedbacks = pgTable("feedbacks", {
   feedbackId: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -67,6 +79,7 @@ export const feedbacks = pgTable("feedbacks", {
 
 export const eventRelations = relations(events, ({ many }) => ({
   enrolls: many(enrolls),
+  groups: many(groups),
 }));
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -83,11 +96,23 @@ export const enrollRelations = relations(enrolls, ({ one }) => ({
     references: [users.userId],
   }),
   feedback: one(feedbacks),
+  group: one(groups, {
+    fields: [enrolls.groupId],
+    references: [groups.groupId],
+  }),
 }));
 
 export const feedbackRelations = relations(feedbacks, ({ one }) => ({
   enroll: one(enrolls, {
     fields: [feedbacks.enrollId],
     references: [enrolls.enrollId],
+  }),
+}));
+
+export const groupRelations = relations(groups, ({ many, one }) => ({
+  enrolls: many(enrolls),
+  event: one(events, {
+    fields: [groups.eventId],
+    references: [events.eventId],
   }),
 }));
