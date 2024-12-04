@@ -27,7 +27,11 @@ export async function loader({ params, request }: Route.LoaderArgs) {
             },
           },
           feedback: true,
-          group: true,
+          group: {
+            columns: {
+              name: true,
+            },
+          },
         },
       },
       groups: true,
