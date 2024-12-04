@@ -21,8 +21,17 @@ export const columns: ColumnDef<typeof events.$inferSelect>[] = [
     header: "活動名稱",
     cell({ getValue, row }) {
       return (
-        <Link to={`/admin/events/${row.original.eventId}`}>{getValue() as string}</Link>
+        <Link to={`/admin/events/${row.original.eventId}`}>
+          {getValue() as string}
+        </Link>
       );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: "日期",
+    cell({ getValue }) {
+      return dateFormatter.format(getValue() as Date);
     },
   },
   {

@@ -8,13 +8,11 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
 import { EnrollButton } from "../enroll-button";
 import { useRootLoaderData } from "~/hook/useRootLoaderData";
-import { Await } from "react-router";
-import { EditEventDialog } from "../dialog/edit-event-dialog";
-import { DeleteEventDialog } from "../dialog/delete-event-dialog";
-import { SquarePen, Trash } from "lucide-react";
+import { Await, Link } from "react-router";
+import { Settings } from "lucide-react";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   weekday: "short",
@@ -60,40 +58,19 @@ export const EventCard = ({ event }: { event: Event }) => {
             {(user) => (
               <>
                 <EnrollButton user={user} event={event} />
-                {user?.role === "admin" && <AdminTools event={event} />}
+                {user?.role === "admin" && (
+                  <Button asChild variant="outline">
+                    <Link to={`/admin/events/${event.eventId}`}>
+                      <Settings className="w-4 h-4" />
+                    </Link>
+                  </Button>
+                )}
               </>
             )}
           </Await>
         </Suspense>
       </CardFooter>
     </Card>
-  );
-};
-
-const AdminTools = ({ event }: { event: Event }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  return (
-    <>
-      <EditEventDialog
-        defaultValues={event}
-        open={isEditing}
-        setOpen={setIsEditing}
-        eventId={event.eventId}
-      />
-      <DeleteEventDialog
-        open={isDeleting}
-        setOpen={setIsDeleting}
-        event={event}
-      />
-      <Button variant="outline" onClick={() => setIsEditing(true)}>
-        <SquarePen className="w-4 h-4" />
-      </Button>
-      <Button variant="destructive" onClick={() => setIsDeleting(true)}>
-        <Trash className="w-4 h-4" />
-      </Button>
-    </>
   );
 };
 
