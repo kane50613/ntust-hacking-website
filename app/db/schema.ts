@@ -48,7 +48,9 @@ export const enrolls = pgTable(
         onDelete: "cascade",
       }),
     createdAt,
-    groupId: integer(),
+    groupId: integer().references(() => groups.groupId, {
+      onDelete: "set null",
+    }),
   },
   (table) => [uniqueIndex().on(table.userId, table.eventId)]
 );
