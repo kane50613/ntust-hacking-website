@@ -55,8 +55,10 @@ export default function Event({ loaderData: { event } }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col container gap-4 py-8 w-full mx-auto">
-      <h1 className="text-2xl">{event.title}</h1>
-      <AdminEventActions event={event} />
+      <div className="flex flex-wrap justify-between sm:items-center gap-6">
+        <h1 className="text-2xl">{event.title}</h1>
+        <AdminEventActions event={event} />
+      </div>
       <div className="grid sm:grid-cols-3 gap-4">
         <Card className="p-6">
           <CardTitle className="text-2xl">{event.enrolls.length}</CardTitle>

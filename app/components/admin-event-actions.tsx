@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { DeleteEventDialog } from "./dialog/delete-event-dialog";
 import type { events } from "~/db/schema";
 import { EventGroupingDialog } from "./dialog/event-grouping-dialog";
+import { Dice6, Pencil, Trash2 } from "lucide-react";
 
 export const AdminEventActions = ({
   event,
@@ -32,9 +33,16 @@ export const AdminEventActions = ({
         setOpen={setIsGrouping}
         event={event}
       />
-      <Button onClick={() => setIsEditing(true)}>編輯活動</Button>
-      <Button onClick={() => setIsGrouping(true)}>隨機分組</Button>
+      <Button onClick={() => setIsEditing(true)} variant="outline">
+        <Pencil className="w-4 h-4" />
+        編輯活動
+      </Button>
+      <Button onClick={() => setIsGrouping(true)} variant="outline">
+        <Dice6 className="w-4 h-4" />
+        隨機分組
+      </Button>
       <Button variant="destructive" onClick={() => setIsDeleting(true)}>
+        <Trash2 className="w-4 h-4" />
         刪除活動
       </Button>
     </div>
