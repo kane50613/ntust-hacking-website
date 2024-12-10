@@ -1,6 +1,6 @@
 import type { Route } from "./+types/api.events.$eventId.edit";
 import { createInsertSchema } from "drizzle-zod";
-import { events } from "~/db/schema";
+import { events, teachers } from "~/db/schema";
 import { z } from "zod";
 import { parse } from "devalue";
 import { eq } from "drizzle-orm";
@@ -28,14 +28,29 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (!(await getUserFromSession(session, "admin")))
     throw new Error("Not logged in as admin");
 
-  const record = await db
-    .update(events)
-    .set(payload)
-    .where(eq(events.eventId, eventId))
-    .returning()
-    .then((result) => result[0]);
+  const record = await db.transaction(async (db) => {
+    const record = await db
+      .update(events)
+      .set(payload)
+      .where(eq(events.eventId, eventId))
+      .returning()
+      .then((result) => result[0]);
 
-  if (!record) throw new Error("Failed to edit event");
+    if (!record) throw new Error("Failed to edit event");
+
+    await db.delete(teachers).where(eq(teachers.eventId, eventId));
+
+    if (payload.teacherIds.length > 0) {
+      await db.insert(teachers).values(
+        payload.teacherIds.map((id) => ({
+          eventId: eventId,
+          userId: id,
+        }))
+      );
+    }
+
+    return record;
+  });
 
   return record;
 }

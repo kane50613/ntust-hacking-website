@@ -26,7 +26,10 @@ export const EditEventDialog = ({
   eventId: number;
 }) => {
   const form = useForm<EditEventPayload>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      teacherIds: defaultValues.teacherIds ?? [],
+    },
     resolver: zodResolver(editEventSchema),
   });
 

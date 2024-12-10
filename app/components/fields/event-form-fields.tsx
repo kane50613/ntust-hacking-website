@@ -11,6 +11,7 @@ import { useFetcher } from "react-router";
 import { useEffect } from "react";
 import type { users } from "~/db/schema";
 import { Skeleton } from "../ui/skeleton";
+import { XIcon } from "lucide-react";
 
 export const EventFormFields = () => {
   const form = useFormContext<CreateEventPayload | EditEventPayload>();
@@ -41,7 +42,9 @@ const TeacherField = () => {
       <FormLabel>講師</FormLabel>
       <UserSelectInput
         onChange={(value) => {
-          if (value) form.setValue("teacherIds", teacherIds.concat(value));
+          if (value && !teacherIds.includes(value)) {
+            form.setValue("teacherIds", teacherIds.concat(value));
+          }
         }}
       />
       {teacherIds.map((teacher) => (
@@ -52,13 +55,30 @@ const TeacherField = () => {
 };
 
 const Teacher = ({ id }: { id: number }) => {
-  const fetcher = useFetcher<typeof users.$inferSelect>();
+  const form = useFormContext<CreateEventPayload | EditEventPayload>();
+
+  const { load, data } = useFetcher<typeof users.$inferSelect>();
 
   useEffect(() => {
-    fetcher.load(`/api/users/${id}`);
-  }, [fetcher, id]);
+    load(`/api/users/${id}`);
+  }, [id, load]);
 
-  if (!fetcher.data) return <Skeleton />;
+  if (!data) return <Skeleton className="text-transparent">{id}</Skeleton>;
 
-  return <div>{fetcher.data.name}</div>;
+  return (
+    <div className="flex items-center gap-2">
+      <span>{data.name}</span>
+      <button
+        className="mt-1"
+        onClick={() =>
+          form.setValue(
+            "teacherIds",
+            form.getValues("teacherIds").filter((value) => value !== id)
+          )
+        }
+      >
+        <XIcon className="h-4 w-4" />
+      </button>
+    </div>
+  );
 };

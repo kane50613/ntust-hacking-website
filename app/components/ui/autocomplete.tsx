@@ -65,6 +65,7 @@ export function AutoComplete<T extends string>({
     } else {
       onSelectedValueChange(inputValue as T);
       onSearchValueChange(labels[inputValue] ?? "");
+      reset();
     }
     setOpen(false);
   };
