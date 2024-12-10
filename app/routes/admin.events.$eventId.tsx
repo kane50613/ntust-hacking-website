@@ -57,6 +57,8 @@ export default function Event({ loaderData: { event } }: Route.ComponentProps) {
       feedbacks.length
     : undefined;
 
+  const formattedRating = rating ? rating.toFixed(1) : undefined;
+
   return (
     <div className="flex flex-col container gap-4 py-8 w-full mx-auto">
       <div className="flex flex-wrap justify-between sm:items-center gap-6">
@@ -69,7 +71,9 @@ export default function Event({ loaderData: { event } }: Route.ComponentProps) {
           <CardDescription>參與者人數</CardDescription>
         </Card>
         <Card className="p-6">
-          <CardTitle className="text-2xl">{rating ?? "暫無評分"}</CardTitle>
+          <CardTitle className="text-2xl">
+            {formattedRating ?? "暫無評分"}
+          </CardTitle>
           <CardDescription>評分</CardDescription>
         </Card>
         <Card className="p-6">
