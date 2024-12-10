@@ -1,11 +1,11 @@
-import { drizzle } from "drizzle-orm/neon-serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import { drizzle as drizzleFs } from "drizzle-orm/pglite";
 import * as schema from "./schema";
-import { Client } from "@neondatabase/serverless";
+import { neon } from "@neondatabase/serverless";
 
 function getDb() {
   if (process.env.DATABASE_URL) {
-    return drizzle(new Client(process.env.DATABASE_URL), {
+    return drizzle(neon(process.env.DATABASE_URL), {
       schema,
     });
   }
