@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Form } from "../ui/form";
-import type { CreateInvitePayload } from "~/routes/api.invites.create";
 import { createInviteSchema } from "~/routes/api.invites.create";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogContent, Dialog, DialogTitle } from "../ui/dialog";

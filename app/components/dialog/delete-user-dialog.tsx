@@ -4,7 +4,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
 import { useJsonFetcher } from "~/hook/use-json-fetcher";
 import { useEffect } from "react";
 import type { User } from "~/routes/admin.users";
