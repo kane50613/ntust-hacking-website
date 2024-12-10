@@ -5,7 +5,7 @@ import { db } from "~/db";
 import { eq } from "drizzle-orm";
 import { events } from "~/db/schema";
 import { DataTable } from "~/components/ui/data-table";
-import { columns } from "~/components/data-table/enroll.table";
+import { columns } from "~/components/data-table/enroll-table";
 import { Card, CardDescription, CardTitle } from "~/components/ui/card";
 import { AdminEventActions } from "~/components/admin-event-actions";
 

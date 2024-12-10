@@ -19,14 +19,42 @@ export const events = pgTable("events", {
   createdAt,
 });
 
-export const role = pgEnum("role", ["admin", "user", "guest"]);
+export const invites = pgTable("invites", {
+  inviteId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  createdBy: integer()
+    .notNull()
+    .references(() => users.userId),
+  code: varchar()
+    .notNull()
+    .unique()
+    .$defaultFn(() =>
+      Array.from({ length: 6 })
+        .map(() => Math.floor(Math.random() * 10))
+        .join("")
+    ),
+  createdAt,
+  maxUsages: integer().notNull().default(1),
+});
 
-export type Role = (typeof role.enumValues)[number];
+export const inviteUses = pgTable("invite_uses", {
+  inviteUseId: integer().primaryKey().generatedByDefaultAsIdentity(),
+  inviteId: integer()
+    .notNull()
+    .references(() => invites.inviteId),
+  userId: integer()
+    .notNull()
+    .references(() => users.userId),
+  createdAt,
+});
+
+export const roles = pgEnum("role", ["admin", "user", "guest"]);
+
+export type Role = (typeof roles.enumValues)[number];
 
 export const users = pgTable("users", {
   userId: integer().primaryKey().generatedByDefaultAsIdentity(),
   discordId: bigint({ mode: "bigint" }).notNull().unique(),
-  role: role().notNull().default("user"),
+  role: roles().notNull().default("guest"),
   name: varchar().notNull(),
   email: varchar().unique(),
   avatar: varchar().notNull(),
@@ -104,9 +132,11 @@ export const eventRelations = relations(events, ({ many }) => ({
   groups: many(groups),
 }));
 
-export const userRelations = relations(users, ({ many }) => ({
+export const userRelations = relations(users, ({ many, one }) => ({
   enrolls: many(enrolls),
   teaching: many(teachers),
+  createdInvites: many(invites),
+  usedInvites: one(inviteUses),
 }));
 
 export const teacherRelations = relations(teachers, ({ one }) => ({
@@ -148,5 +178,24 @@ export const groupRelations = relations(groups, ({ many, one }) => ({
   event: one(events, {
     fields: [groups.eventId],
     references: [events.eventId],
+  }),
+}));
+
+export const inviteRelations = relations(invites, ({ one, many }) => ({
+  createdBy: one(users, {
+    fields: [invites.createdBy],
+    references: [users.userId],
+  }),
+  uses: many(inviteUses),
+}));
+
+export const inviteUseRelations = relations(inviteUses, ({ one }) => ({
+  invite: one(invites, {
+    fields: [inviteUses.inviteId],
+    references: [invites.inviteId],
+  }),
+  user: one(users, {
+    fields: [inviteUses.userId],
+    references: [users.userId],
   }),
 }));

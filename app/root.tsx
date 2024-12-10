@@ -1,6 +1,6 @@
 import type { LinksFunction } from "react-router";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import "./app.css";
+import css from "./app.css?url";
 import { MotionLoader } from "./components/motion-loader";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
@@ -9,6 +9,7 @@ import { getSessionFromRequest, getUserFromSession } from "./session";
 import { Toaster } from "./components/ui/sonner";
 
 export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: css },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
   {

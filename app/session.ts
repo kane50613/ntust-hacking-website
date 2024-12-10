@@ -2,7 +2,7 @@ import type { Session } from "react-router";
 import { createCookieSessionStorage } from "react-router";
 import { env } from "./env";
 import type { Role } from "./db/schema";
-import { users } from "./db/schema";
+import { roles, users } from "./db/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
@@ -37,7 +37,14 @@ export async function getUserFromSession(
     where: eq(users.userId, session.data.userId),
   });
 
-  if (!record || (role && record.role !== role)) return;
+  if (!record) return;
+  
+  if (role) {
+    const currentIndex = roles.enumValues.indexOf(record.role);
+    const targetIndex = roles.enumValues.indexOf(role);
+    
+    if (currentIndex < targetIndex) return;
+  }
 
   return record;
 }

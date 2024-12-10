@@ -4,7 +4,7 @@ import { db } from "~/db";
 import { enrolls } from "~/db/schema";
 import { clientActionToast } from "~/lib/client-action-toast";
 import type { Route } from "~/routes/+types/enroll";
-import { getSessionFromRequest } from "~/session";
+import { getSessionFromRequest, getUserFromSession } from "~/session";
 
 const enrollSchema = z.object({
   eventId: z.number(),
@@ -16,15 +16,15 @@ export async function action({ request }: Route.ActionArgs) {
   const { eventId } = enrollSchema.parse(parse(await request.text()));
 
   const session = await getSessionFromRequest(request);
+  const user = await getUserFromSession(session, "user");
 
-  if (!session.data.userId)
-    return new Response("Not logged in", { status: 401 });
+  if (!user) throw new Error("Not logged in");
 
   await db
     .insert(enrolls)
     .values({
       eventId,
-      userId: session.data.userId,
+      userId: user.userId,
     })
     .onConflictDoNothing();
 }

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { role } from "~/db/schema";
+import { roles } from "~/db/schema";
 
 export const UserFormFields = () => {
   const form = useFormContext<EditUserPayload>();
@@ -29,7 +29,7 @@ export const UserFormFields = () => {
               <SelectValue placeholder="選擇權限" />
             </SelectTrigger>
             <SelectContent>
-              {role.enumValues.map((value) => (
+              {roles.enumValues.map((value) => (
                 <SelectItem key={value} value={value}>
                   {value}
                 </SelectItem>
