@@ -4,7 +4,7 @@ import { env } from "./env";
 import type { Role } from "./db/schema";
 import { roles, users } from "./db/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 export interface SessionData {
   userId?: number;
@@ -29,22 +29,24 @@ export function getSessionFromRequest(request: Request) {
 
 export async function getUserFromSession(
   session: Session<SessionData>,
-  role?: Role
+  role: Role
 ) {
   if (!session.data.userId) return;
 
-  const record = await db.query.users.findFirst({
-    where: eq(users.userId, session.data.userId),
-  });
+  const where = [eq(users.userId, session.data.userId)];
 
-  if (!record) return;
-  
   if (role) {
-    const currentIndex = roles.enumValues.indexOf(record.role);
-    const targetIndex = roles.enumValues.indexOf(role);
-    
-    if (currentIndex < targetIndex) return;
+    where.push(
+      inArray(
+        users.role,
+        roles.enumValues.slice(roles.enumValues.indexOf(role))
+      )
+    );
   }
+
+  const record = await db.query.users.findFirst({
+    where: and(...where),
+  });
 
   return record;
 }

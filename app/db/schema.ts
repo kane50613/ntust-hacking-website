@@ -47,7 +47,7 @@ export const inviteUses = pgTable("invite_uses", {
   createdAt,
 });
 
-export const roles = pgEnum("role", ["admin", "user", "guest"]);
+export const roles = pgEnum("role", ["guest", "user", "admin"]);
 
 export type Role = (typeof roles.enumValues)[number];
 
