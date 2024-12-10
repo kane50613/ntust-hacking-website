@@ -2,9 +2,10 @@ import { useFormContext } from "react-hook-form";
 import type { CreateInvitePayload } from "~/routes/api.invites.create";
 import { RichInputField } from "../ui/rich-input-field";
 import { Input } from "../ui/input";
+import type { EditInvitePayload } from "~/routes/api.invites.$inviteId.edit";
 
 export const InviteFormFields = () => {
-  const form = useFormContext<CreateInvitePayload>();
+  const form = useFormContext<CreateInvitePayload | EditInvitePayload>();
 
   return (
     <>

@@ -13,9 +13,9 @@ const createdAt = timestamp().notNull().defaultNow();
 
 export const events = pgTable("events", {
   eventId: integer().primaryKey().generatedByDefaultAsIdentity(),
-  title: varchar(),
+  title: varchar().notNull(),
   description: varchar(),
-  date: timestamp(),
+  date: timestamp().notNull(),
   createdAt,
 });
 

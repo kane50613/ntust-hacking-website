@@ -40,9 +40,9 @@ const TeacherField = () => {
     <FormItem>
       <FormLabel>講師</FormLabel>
       <UserSelectInput
-        onChange={(value) =>
-          form.setValue("teacherIds", teacherIds.concat(value))
-        }
+        onChange={(value) => {
+          if (value) form.setValue("teacherIds", teacherIds.concat(value));
+        }}
       />
       {teacherIds.map((teacher) => (
         <Teacher key={teacher} id={teacher} />

@@ -1,5 +1,5 @@
 import { getSessionFromRequest, getUserFromSession } from "~/session";
-import type { Route } from "./+types/api.users";
+import type { Route } from "./+types/api.users._index";
 import { db } from "~/db";
 import { ilike } from "drizzle-orm";
 import { users } from "~/db/schema";
@@ -15,7 +15,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   const query = searchParams.get("query");
 
   return await db.query.users.findMany({
-    where: ilike(users.name, `%${query}$`),
+    where: ilike(users.name, `%${query}%`),
     limit: 10,
+    columns: {
+      userId: true,
+      name: true,
+      avatar: true,
+    },
   });
 }

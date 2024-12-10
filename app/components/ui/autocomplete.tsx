@@ -55,13 +55,8 @@ export function AutoComplete<T extends string>({
     onSearchValueChange("");
   };
 
-  const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (
-      !e.relatedTarget?.hasAttribute("cmdk-list") &&
-      labels[selectedValue] !== searchValue
-    ) {
-      reset();
-    }
+  const onInputBlur = () => {
+    setOpen(false);
   };
 
   const onSelectItem = (inputValue: string) => {

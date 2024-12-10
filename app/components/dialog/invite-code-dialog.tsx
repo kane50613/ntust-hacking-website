@@ -16,7 +16,7 @@ export const InviteCodeDialog = ({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) => {
-  const parts = /^\d{6}$/.test(invite.code)
+  const parts = /^\d{0,6}$/.test(invite.code)
     ? invite.code.split("")
     : [invite.code];
 
@@ -29,14 +29,14 @@ export const InviteCodeDialog = ({
             這組邀請碼還可以使用 {invite.maxUsages - invite.uses} 次
           </DialogDescription>
         </DialogHeader>
-        <div className="flex justify-between text-2xl sm:text-4xl flex-wrap font-semibold w-full">
+        <div className="flex gap-2 sm:gap-4 justify-between text-2xl sm:text-4xl flex-wrap font-semibold w-full">
           {parts.map((part, index) => (
-            <div
+            <span
               key={index}
-              className="bg-accent px-4 py-4 sm:px-6 sm:py-4 rounded-lg"
+              className="bg-accent py-4 rounded-lg flex-grow text-center"
             >
               {part}
-            </div>
+            </span>
           ))}
         </div>
       </DialogContent>

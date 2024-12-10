@@ -11,7 +11,7 @@ interface UserSelectInputProps {
 export function UserSelectInput({ value, onChange }: UserSelectInputProps) {
   const [search, setSearch] = useState("");
 
-  const fetcher = useFetcher<(typeof users.$inferSelect)[]>();
+  const { load, data, state } = useFetcher<(typeof users.$inferSelect)[]>();
 
   useEffect(() => {
     if (!search) return;
@@ -20,17 +20,18 @@ export function UserSelectInput({ value, onChange }: UserSelectInputProps) {
 
     url.searchParams.set("query", search);
 
-    fetcher.load(url.toString());
-  }, [fetcher, search]);
+    load(url.pathname + url.search);
+  }, [load, search]);
 
   return (
     <AutoComplete
       items={
-        fetcher.data?.map((user) => ({
+        data?.map((user) => ({
           label: user.name,
           value: user.userId.toString(),
         })) ?? []
       }
+      isLoading={state !== "idle"}
       selectedValue={value ? value.toString() : ""}
       onSelectedValueChange={(value) => onChange(parseInt(value))}
       searchValue={search}

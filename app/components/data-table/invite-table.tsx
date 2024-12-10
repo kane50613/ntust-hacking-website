@@ -2,9 +2,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import type { Invite } from "~/routes/admin.invites._index";
 import { Button } from "../ui/button";
-import { LinkIcon, Trash } from "lucide-react";
+import { Edit, LinkIcon, Trash } from "lucide-react";
 import { InviteCodeDialog } from "../dialog/invite-code-dialog";
 import { DeleteInviteDialog } from "../dialog/delete-invite-dialog";
+import { EditInviteDialog } from "../dialog/edit-invite-dialog";
 
 export const columns: ColumnDef<Invite>[] = [
   {
@@ -34,6 +35,7 @@ export const columns: ColumnDef<Invite>[] = [
     cell: ({ row }) => (
       <div className="flex gap-2">
         <ViewCodeButton invite={row.original} />
+        <EditButton invite={row.original} />
         <DeleteButton invite={row.original} />
       </div>
     ),
@@ -54,6 +56,25 @@ const ViewCodeButton = ({ invite }: { invite: Invite }) => {
         }}
       >
         <LinkIcon className="w-4 h-4" />
+      </Button>
+    </>
+  );
+};
+
+const EditButton = ({ invite }: { invite: Invite }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <EditInviteDialog open={isOpen} setOpen={setIsOpen} invite={invite} />
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        <Edit className="w-4 h-4" />
       </Button>
     </>
   );
