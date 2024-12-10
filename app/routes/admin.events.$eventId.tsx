@@ -7,6 +7,7 @@ import { events } from "~/db/schema";
 import { DataTable } from "~/components/ui/data-table";
 import { columns } from "~/components/data-table/enroll.table";
 import { Card, CardDescription, CardTitle } from "~/components/ui/card";
+import { AdminEventActions } from "~/components/admin-event-actions";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const eventId = parseInt(params.eventId);
@@ -26,8 +27,14 @@ export async function loader({ params, request }: Route.LoaderArgs) {
             },
           },
           feedback: true,
+          group: {
+            columns: {
+              name: true,
+            },
+          },
         },
       },
+      groups: true,
     },
   });
 
@@ -52,8 +59,11 @@ export default function Event({ loaderData: { event } }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col container gap-4 py-8 w-full mx-auto">
-      <h1 className="text-2xl">{event.title}</h1>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-wrap justify-between sm:items-center gap-6">
+        <h1 className="text-2xl">{event.title}</h1>
+        <AdminEventActions event={event} />
+      </div>
+      <div className="grid sm:grid-cols-3 gap-4">
         <Card className="p-6">
           <CardTitle className="text-2xl">{event.enrolls.length}</CardTitle>
           <CardDescription>參與者人數</CardDescription>
@@ -61,6 +71,10 @@ export default function Event({ loaderData: { event } }: Route.ComponentProps) {
         <Card className="p-6">
           <CardTitle className="text-2xl">{rating ?? "暫無評分"}</CardTitle>
           <CardDescription>評分</CardDescription>
+        </Card>
+        <Card className="p-6">
+          <CardTitle className="text-2xl">{event.groups.length}</CardTitle>
+          <CardDescription>組別數量</CardDescription>
         </Card>
       </div>
       <DataTable columns={columns} data={event.enrolls} />

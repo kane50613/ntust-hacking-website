@@ -16,7 +16,7 @@ export const DeleteEventDialog = ({
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  event: typeof events.$inferSelect;
+  event: Pick<typeof events.$inferSelect, "title" | "eventId">;
 }) => {
   const [submit, fetcher] = useJsonFetcher(
     `/api/events/${event.eventId}/delete`

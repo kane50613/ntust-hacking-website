@@ -27,7 +27,7 @@ export async function seedDb() {
   const userRecords = await db
     .insert(users)
     .values(
-      Array.from({ length: 10 }, () => ({
+      Array.from({ length: 200 }, () => ({
         discordId: faker.number.bigInt(),
         name: faker.person.fullName(),
         email: faker.internet.email(),
