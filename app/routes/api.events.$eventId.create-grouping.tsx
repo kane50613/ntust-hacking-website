@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { Route } from "./+types/api.events.$eventId.create-grouping";
 import { parse } from "devalue";
-import { db } from "~/db";
+import { startTransaction } from "~/db";
 import { enrolls, events, groups } from "~/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { clientActionToast } from "~/lib/client-action-toast";
@@ -22,7 +22,7 @@ export async function action({ request, params }: Route.LoaderArgs) {
   if (!(await getUserFromSession(session, "admin")))
     throw new Error("Not logged in as admin");
 
-  const records = await db.transaction(async (db) => {
+  const records = await startTransaction(async (db) => {
     const event = await db.query.events.findFirst({
       where: eq(events.eventId, eventId),
       with: {

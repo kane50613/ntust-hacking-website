@@ -4,7 +4,7 @@ import { events, teachers } from "~/db/schema";
 import { z } from "zod";
 import { parse } from "devalue";
 import { eq } from "drizzle-orm";
-import { db } from "~/db";
+import { startTransaction } from "~/db";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { clientActionToast } from "~/lib/client-action-toast";
 
@@ -28,7 +28,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (!(await getUserFromSession(session, "admin")))
     throw new Error("Not logged in as admin");
 
-  const record = await db.transaction(async (db) => {
+  const record = await startTransaction(async (db) => {
     const record = await db
       .update(events)
       .set(payload)
