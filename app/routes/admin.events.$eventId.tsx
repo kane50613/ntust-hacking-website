@@ -34,6 +34,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
           },
         },
       },
+      teachers: true,
       groups: true,
     },
   });

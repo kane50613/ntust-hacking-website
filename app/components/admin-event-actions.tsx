@@ -2,15 +2,11 @@ import { useState } from "react";
 import { EditEventDialog } from "./dialog/edit-event-dialog";
 import { Button } from "./ui/button";
 import { DeleteEventDialog } from "./dialog/delete-event-dialog";
-import type { events } from "~/db/schema";
 import { EventGroupingDialog } from "./dialog/event-grouping-dialog";
 import { Dice6, Pencil, Trash2 } from "lucide-react";
+import type { AdminEvent } from "~/routes/admin.events.$eventId";
 
-export const AdminEventActions = ({
-  event,
-}: {
-  event: typeof events.$inferSelect;
-}) => {
+export const AdminEventActions = ({ event }: { event: AdminEvent }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
@@ -18,7 +14,10 @@ export const AdminEventActions = ({
   return (
     <div className="flex gap-4">
       <EditEventDialog
-        defaultValues={event}
+        defaultValues={{
+          ...event,
+          teacherIds: event.teachers.map((teacher) => teacher.userId),
+        }}
         open={isEditing}
         setOpen={setIsEditing}
         eventId={event.eventId}
