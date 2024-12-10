@@ -24,6 +24,7 @@ export const CreateEventDialog = ({
   const form = useForm<CreateEventPayload>({
     defaultValues: {
       date: new Date(),
+      teacherIds: [],
     },
     resolver: zodResolver(createEventSchema),
   });

@@ -11,7 +11,8 @@
     "prettier": "prettier --write .",
     "typecheck": "react-router typegen",
     "db:push": "drizzle-kit push && bun app/db/seed.ts",
-    "db:server": "tsx scripts/pg-gateway.ts"
+    "db:server": "tsx scripts/pg-gateway.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.13",
@@ -36,6 +37,7 @@
     "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
     "devalue": "^5.1.1",
     "drizzle-orm": "^0.36.4",

@@ -1,17 +1,21 @@
 import type { Route } from "./+types/api.events.$eventId.edit";
 import { createInsertSchema } from "drizzle-zod";
 import { events } from "~/db/schema";
-import type { z } from "zod";
+import { z } from "zod";
 import { parse } from "devalue";
 import { eq } from "drizzle-orm";
 import { db } from "~/db";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { clientActionToast } from "~/lib/client-action-toast";
 
-export const editEventSchema = createInsertSchema(events).omit({
-  createdAt: true,
-  eventId: true,
-});
+export const editEventSchema = createInsertSchema(events)
+  .omit({
+    createdAt: true,
+    eventId: true,
+  })
+  .extend({
+    teacherIds: z.array(z.number()).default([]),
+  });
 
 export type EditEventPayload = z.infer<typeof editEventSchema>;
 

@@ -33,6 +33,25 @@ export const users = pgTable("users", {
   createdAt,
 });
 
+export const teachers = pgTable(
+  "teachers",
+  {
+    teacherId: integer().primaryKey().generatedByDefaultAsIdentity(),
+    eventId: integer()
+      .notNull()
+      .references(() => events.eventId, {
+        onDelete: "cascade",
+      }),
+    userId: integer()
+      .notNull()
+      .references(() => users.userId, {
+        onDelete: "cascade",
+      }),
+    createdAt,
+  },
+  (teacher) => [uniqueIndex().on(teacher.eventId, teacher.userId)]
+);
+
 export const enrolls = pgTable(
   "enrolls",
   {
@@ -67,10 +86,23 @@ export const feedbacks = pgTable("feedbacks", {
 
 export const eventRelations = relations(events, ({ many }) => ({
   enrolls: many(enrolls),
+  teachers: many(teachers),
 }));
 
 export const userRelations = relations(users, ({ many }) => ({
   enrolls: many(enrolls),
+  teaching: many(teachers),
+}));
+
+export const teacherRelations = relations(teachers, ({ one }) => ({
+  event: one(events, {
+    fields: [teachers.eventId],
+    references: [events.eventId],
+  }),
+  user: one(users, {
+    fields: [teachers.userId],
+    references: [users.userId],
+  }),
 }));
 
 export const enrollRelations = relations(enrolls, ({ one }) => ({
