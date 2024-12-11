@@ -3,7 +3,7 @@ import type { Route } from "./+types/api.invites.use";
 import { parse } from "devalue";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 import { clientActionToast } from "~/lib/client-action-toast";
-import { db } from "~/db";
+import { startTransaction } from "~/db";
 import { invites, inviteUses, users } from "~/db/schema";
 import { count, eq, getTableColumns, lt } from "drizzle-orm";
 
@@ -21,21 +21,21 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (!user) throw new Error("Not logged in");
 
-  const invite = await db
-    .select({
-      ...getTableColumns(invites),
-      uses: count(inviteUses.inviteUseId),
-    })
-    .from(invites)
-    .where(eq(invites.code, payload.code))
-    .leftJoin(inviteUses, eq(invites.inviteId, inviteUses.inviteId))
-    .groupBy(invites.inviteId)
-    .having((row) => lt(row.uses, row.maxUsages))
-    .then((result) => result[0]);
+  const record = await startTransaction(async (db) => {
+    const invite = await db
+      .select({
+        ...getTableColumns(invites),
+        uses: count(inviteUses.inviteUseId),
+      })
+      .from(invites)
+      .where(eq(invites.code, payload.code))
+      .leftJoin(inviteUses, eq(invites.inviteId, inviteUses.inviteId))
+      .groupBy(invites.inviteId)
+      .having((row) => lt(row.uses, row.maxUsages))
+      .then((result) => result[0]);
 
-  if (!invite) throw new Error("Invalid invite code");
+    if (!invite) throw new Error("Invalid invite code");
 
-  const record = await db.transaction(async (db) => {
     await db
       .update(users)
       .set({
