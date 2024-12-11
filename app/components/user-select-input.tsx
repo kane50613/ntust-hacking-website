@@ -1,6 +1,6 @@
 import { useFetcher } from "react-router";
 import type { users } from "~/db/schema";
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useState } from "react";
 import { AutoComplete } from "./ui/autocomplete";
 
 interface UserSelectInputProps {
@@ -11,17 +11,21 @@ interface UserSelectInputProps {
 export function UserSelectInput({ value, onChange }: UserSelectInputProps) {
   const [search, setSearch] = useState("");
 
-  const { load, data, state } = useFetcher<(typeof users.$inferSelect)[]>();
+  const deferredSearch = useDeferredValue(search);
+
+  const { load, data, state } = useFetcher<(typeof users.$inferSelect)[]>({
+    key: `users-search-${deferredSearch}`,
+  });
 
   useEffect(() => {
-    if (!search) return;
+    if (!deferredSearch) return;
 
     const url = new URL("/api/users", location.origin);
 
-    url.searchParams.set("query", search);
+    url.searchParams.set("query", deferredSearch);
 
     load(url.pathname + url.search);
-  }, [load, search]);
+  }, [load, deferredSearch]);
 
   return (
     <AutoComplete
