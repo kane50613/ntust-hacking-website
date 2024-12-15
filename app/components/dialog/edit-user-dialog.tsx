@@ -43,8 +43,8 @@ export const EditUserDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
-        <DialogTitle>編輯活動</DialogTitle>
-        <DialogDescription>{defaultValues.name} 的成員資料</DialogDescription>
+        <DialogTitle>編輯社員</DialogTitle>
+        <DialogDescription>{defaultValues.name} 的社員資料</DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
             <UserFormFields />
