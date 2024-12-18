@@ -1,5 +1,5 @@
 import { getSessionFromRequest, getUserFromSession } from "~/session";
-import type { Route } from "./+types/admin.events._index";
+import type { Info, Route } from "./+types/admin.events._index";
 import { redirect } from "react-router";
 import { db } from "~/db";
 import { DataTable } from "~/components/ui/data-table";
@@ -18,9 +18,18 @@ export async function loader({ request }: Route.LoaderArgs) {
   return {
     events: await db.query.events.findMany({
       orderBy: desc(events.createdAt),
+      with: {
+        teachers: {
+          columns: {
+            teacherId: true,
+          }
+        }
+      }
     }),
   };
 }
+
+export type AdminListEvent = Info["loaderData"]["events"][number];
 
 export default function Users({
   loaderData: { events },

@@ -4,14 +4,14 @@ import { Button } from "../ui/button";
 import { SquarePen, Trash } from "lucide-react";
 import { EditEventDialog } from "../dialog/edit-event-dialog";
 import { DeleteEventDialog } from "../dialog/delete-event-dialog";
-import type { events } from "~/db/schema";
 import { Link } from "react-router";
+import type { AdminListEvent } from "~/routes/admin.events._index";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-TW", {
   dateStyle: "full",
 });
 
-export const columns: ColumnDef<typeof events.$inferSelect>[] = [
+export const columns: ColumnDef<AdminListEvent>[] = [
   {
     accessorKey: "eventId",
     header: "ID",
@@ -48,14 +48,17 @@ export const columns: ColumnDef<typeof events.$inferSelect>[] = [
   },
 ];
 
-const Actions = ({ event }: { event: typeof events.$inferSelect }) => {
+const Actions = ({ event }: { event: AdminListEvent }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div className="flex gap-2">
       <EditEventDialog
-        defaultValues={event}
+        defaultValues={{
+          ...event,
+          teacherIds: event.teachers.map((teacher) => teacher.teacherId),
+        }}
         open={isEditing}
         setOpen={setIsEditing}
         eventId={event.eventId}
