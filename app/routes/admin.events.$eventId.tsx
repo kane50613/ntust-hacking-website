@@ -2,8 +2,8 @@ import { getSessionFromRequest, getUserFromSession } from "~/session";
 import type { Info, Route } from "./+types/admin.events.$eventId";
 import { redirect } from "react-router";
 import { db } from "~/db";
-import { eq } from "drizzle-orm";
-import { events } from "~/db/schema";
+import { asc, eq } from "drizzle-orm";
+import { enrolls, events } from "~/db/schema";
 import { DataTable } from "~/components/ui/data-table";
 import { columns } from "~/components/data-table/enroll-table";
 import { Card, CardDescription, CardTitle } from "~/components/ui/card";
@@ -20,6 +20,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     where: eq(events.eventId, eventId),
     with: {
       enrolls: {
+        orderBy: asc(enrolls.groupId),
         with: {
           user: {
             columns: {
