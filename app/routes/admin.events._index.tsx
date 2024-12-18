@@ -17,7 +17,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   return {
     events: await db.query.events.findMany({
-      orderBy: desc(events.createdAt),
+      orderBy: desc(events.eventId),
       with: {
         teachers: {
           columns: {
