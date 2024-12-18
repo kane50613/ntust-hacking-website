@@ -35,4 +35,4 @@ bun run db:push
 bun run dev
 ```
 
-終端機會提示伺服器啟動在 http://localhost:5173，點下去就可以看到網頁
+終端機會提示伺服器啟動在 localhost，點下去就可以看到網頁
