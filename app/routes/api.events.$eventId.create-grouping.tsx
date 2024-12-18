@@ -3,7 +3,7 @@ import type { Route } from "./+types/api.events.$eventId.create-grouping";
 import { parse } from "devalue";
 import { startTransaction } from "~/db";
 import { enrolls, events, groups } from "~/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { clientActionToast } from "~/lib/client-action-toast";
 import { getSessionFromRequest, getUserFromSession } from "~/session";
 
@@ -48,15 +48,27 @@ export async function action({ request, params }: Route.LoaderArgs) {
 
     let groupIndex = 0;
 
+    const groupMap = new Map<number, number[]>();
+
+    for (const group of groupRecords) {
+      groupMap.set(group.groupId, []);
+    }
+
     for (const enroll of event.enrolls) {
-      await db
-        .update(enrolls)
-        .set({ groupId: groupRecords[groupIndex].groupId })
-        .where(eq(enrolls.enrollId, enroll.enrollId));
+      groupMap.get(groupRecords[groupIndex].groupId)?.push(enroll.enrollId);
 
       groupIndex++;
 
       if (groupIndex >= payload.amount) groupIndex = 0;
+    }
+
+    for (const [groupId, enrollIds] of groupMap.entries()) {
+      await db
+        .update(enrolls)
+        .set({
+          groupId,
+        })
+        .where(inArray(enrolls.enrollId, enrollIds));
     }
 
     return groupRecords;
