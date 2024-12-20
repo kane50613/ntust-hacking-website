@@ -2,6 +2,7 @@ import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 
+// @ts-expect-error: no edge export
 import { renderToReadableStream } from "react-dom/server.edge";
 
 export default async function handleRequest(

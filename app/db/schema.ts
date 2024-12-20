@@ -56,7 +56,7 @@ export const users = pgTable("users", {
   discordId: bigint({ mode: "bigint" }).notNull().unique(),
   role: roles().notNull().default("guest"),
   name: varchar().notNull(),
-  email: varchar().unique(),
+  email: varchar().unique().notNull(),
   avatar: varchar().notNull(),
   createdAt,
 });

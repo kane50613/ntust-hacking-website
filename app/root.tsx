@@ -49,7 +49,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSessionFromRequest(request);
 
   return {
-    user: getUserFromSession(session),
+    user: getUserFromSession(session, "guest"),
   };
 }
 

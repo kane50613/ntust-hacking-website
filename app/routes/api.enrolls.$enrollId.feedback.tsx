@@ -8,13 +8,15 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { clientActionToast } from "~/lib/client-action-toast";
 
-export const createFeedbackSchema = createInsertSchema(feedbacks, {
-  rating: z.number().int().min(1).max(5),
-}).omit({
-  feedbackId: true,
-  enrollId: true,
-  createdAt: true,
-});
+export const createFeedbackSchema = createInsertSchema(feedbacks)
+  .omit({
+    feedbackId: true,
+    enrollId: true,
+    createdAt: true,
+  })
+  .extend({
+    rating: z.number().int().min(1).max(5),
+  });
 
 export type CreateFeedbackPayload = z.infer<typeof createFeedbackSchema>;
 
@@ -23,7 +25,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   const payload = createFeedbackSchema.parse(parse(await request.text()));
 
   const session = await getSessionFromRequest(request);
-  const user = await getUserFromSession(session);
+  const user = await getUserFromSession(session, "user");
 
   if (!user) throw new Error("Not logged in");
 
